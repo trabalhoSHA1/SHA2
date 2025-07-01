@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Calendar, Users, Clock, Video, FileText, TrendingUp } from 'lucide-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './features/login/Login';
 import ProtectedRoute from './context/ProtectedRoute';
 import Layout from './components/layout/Layout';
@@ -12,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        {/* Rotas protegidas com layout */}
+        {/* Rotas protegidas */}
         <Route element={<ProtectedRoute allowedRoles={['therapist']} />}>
           <Route
             path="/dashboard/therapist"

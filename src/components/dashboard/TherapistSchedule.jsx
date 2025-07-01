@@ -1,4 +1,3 @@
-// src/components/dashboards/TherapistSchedule.jsx
 import React from 'react';
 
 export default function TherapistSchedule() {
