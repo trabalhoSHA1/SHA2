@@ -22,11 +22,11 @@ const Header = () => {
 
       <div className="flex items-center gap-4">
         <span className="text-sm text-gray-500">
-          {new Date().toLocaleDateString('pt-BR', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+          {new Date().toLocaleDateString('pt-BR', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
           })}
         </span>
 

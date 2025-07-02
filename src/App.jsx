@@ -14,7 +14,7 @@ function App() {
         {/* Rotas protegidas */}
         <Route element={<ProtectedRoute allowedRoles={['therapist']} />}>
           <Route
-            path="/dashboard/therapist"
+            path="/dashboard/TherapistDashboard"
             element={
               <Layout>
                 <TherapistDashboard />
