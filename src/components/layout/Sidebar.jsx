@@ -2,9 +2,11 @@
 import React from 'react';
 import { 
   Home,
-  Users,
+  Users as User,
   Calendar,
   FileText,
+  Users,
+  Clock,
   UserCheck,
   Building,
   BarChart3,
@@ -16,20 +18,20 @@ import {
 const Sidebar = ({ isOpen, onToggle, activeSection, onSectionChange, userType }) => {
   const getMenuItems = () => {
     const baseItems = [
-      { id: 'dashboard', label: 'Dashboard', icon: Home, allowed: ['terapeuta', 'administrador', 'assistente'] },
-      { id: 'my-schedule', label: 'Minha Agenda', icon: Calendar, allowed: ['terapeuta'] },
-      { id: 'profile', label: 'Meu Perfil', icon: User, allowed: ['terapeuta', 'administrador', 'assistente'] },
-      { id: 'appointments', label: 'Agendamentos', icon: Calendar, allowed: ['terapeuta', 'administrador', 'assistente'] },
-      { id: 'therapist-schedules', label: 'Agenda dos Terapeutas', icon: Clock, allowed: ['administrador', 'assistente'] },
-      { id: 'patients', label: 'Pacientes', icon: Users, allowed: ['administrador', 'assistente'] },
-      { id: 'medical-records', label: 'Prontuários', icon: FileText, allowed: ['terapeuta', 'administrador'] },
+      { id: 'dashboard', label: 'Dashboard', icon: Home, allowed: ['therapist', 'admin', 'assistant'] },
+      { id: 'my-schedule', label: 'Minha Agenda', icon: Calendar, allowed: ['therapist'] },
+      { id: 'profile', label: 'Meu Perfil', icon: UserCheck, allowed: ['therapist', 'admin', 'assistant'] },
+      { id: 'appointments', label: 'Agendamentos', icon: Calendar, allowed: ['therapist', 'admin', 'assistant'] },
+      { id: 'therapist-schedules', label: 'Agenda dos Terapeutas', icon: Clock, allowed: ['admin', 'assistant'] },
+      { id: 'patients', label: 'Pacientes', icon: Users, allowed: ['admin', 'assistant'] },
+      { id: 'medical-records', label: 'Prontuários', icon: FileText, allowed: ['therapist', 'admin'] },
     ];
 
     const adminItems = [
-      { id: 'therapists', label: 'Terapeutas', icon: UserCheck, allowed: ['administrador'] },
-      { id: 'rooms', label: 'Salas', icon: Building, allowed: ['administrador'] },
-      { id: 'reports', label: 'Relatórios', icon: BarChart3, allowed: ['administrador'] },
-      { id: 'settings', label: 'Configurações', icon: Settings, allowed: ['administrador', 'terapeuta', 'assistente'] },
+      { id: 'therapists', label: 'Terapeutas', icon: UserCheck, allowed: ['admin'] },
+      { id: 'rooms', label: 'Salas', icon: Building, allowed: ['admin'] },
+      { id: 'reports', label: 'Relatórios', icon: BarChart3, allowed: ['admin'] },
+      { id: 'settings', label: 'Configurações', icon: Settings, allowed: ['admin', 'therapist', 'assistant'] },
     ];
 
     return [...baseItems, ...adminItems].filter(item => 

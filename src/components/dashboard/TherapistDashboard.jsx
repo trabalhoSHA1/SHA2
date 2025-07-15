@@ -1,29 +1,33 @@
-// src/components/dashboards/TherapistDashboard.jsx
 import React, { useState } from 'react';
-import { Calendar, Clock, Video, FileText, TrendingUp, CalendarCheck } from 'lucide-react';
 
 export default function TherapistDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
 
   const todayAppointments = [
-    { id: 1, patient: 'Maria Silva', time: '09:00', type: 'presencial', isFirst: false },
-    { id: 2, patient: 'João Santos', time: '10:30', type: 'online', isFirst: true },
-    { id: 3, patient: 'Ana Costa', time: '14:00', type: 'presencial', isFirst: false },
-    { id: 4, patient: 'Pedro Lima', time: '15:30', type: 'online', isFirst: false }
+    { id: 1, patient: 'Maria Silva', time: '09:00', type: 'presencial' },
+    { id: 2, patient: 'João Santos', time: '10:30', type: 'online' }
   ];
 
   const activePatients = [
-    { id: 1, name: 'Maria Silva', nextSession: '2024-01-15', progress: 'Positiva' },
-    { id: 2, name: 'João Santos', nextSession: '2024-01-16', progress: 'Estável' },
-    { id: 3, name: 'Ana Costa', nextSession: '2024-01-17', progress: 'Positiva' },
+    { id: 1, name: 'Ana Costa', progress: 'Positiva' },
+    { id: 2, name: 'Carlos Souza', progress: 'Estável' }
   ];
 
   if (activeTab === 'schedule') {
     return (
-      <div>
-        <h2 className="text-xl font-semibold mb-4">📅 Minha Agenda</h2>
-        <p>Aqui vai sua agenda completa (diária/semanal/mensal)</p>
-        <button onClick={() => setActiveTab('overview')} className="mt-4 text-sm bg-blue-500 text-white px-4 py-2 rounded">
+      <div style={{ padding: '2rem' }}>
+        <h2>Minha Agenda</h2>
+        <p>Aqui vai sua agenda completa</p>
+        <button 
+          onClick={() => setActiveTab('overview')} 
+          style={{
+            marginTop: '1rem',
+            padding: '0.5rem 1rem',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            borderRadius: '0.5rem'
+          }}
+        >
           Voltar para Visão Geral
         </button>
       </div>
@@ -31,200 +35,121 @@ export default function TherapistDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Cabeçalho */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard do Terapeuta</h1>
-        <div className="text-sm text-gray-500">
-          {new Date().toLocaleDateString('pt-BR', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          })}
-        </div>
-      </div>
+    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Dashboard do Terapeuta</h1>
 
-      {/* Abas de navegação */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-1">
-        <div className="flex bg-gray-100 rounded-lg p-1">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium transition-all ${
-              activeTab === 'overview' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            {/* Ícone de gráfico */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
-            </svg>
-            Visão Geral
-          </button>
-          <button
-            onClick={() => setActiveTab('schedule')}
-            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium transition-all ${
-              activeTab === 'schedule' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            {/* Ícone de calendário */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            Minha Agenda
-          </button>
-        </div>
+      {/* Abas */}
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        <button 
+          onClick={() => setActiveTab('overview')}
+          style={{
+            flex: 1,
+            padding: '0.75rem',
+            backgroundColor: activeTab === 'overview' ? '#3b82f6' : '#bfdbfe',
+            color: activeTab === 'overview' ? 'white' : '#1e40af',
+            fontWeight: activeTab === 'overview' ? 'bold' : 'normal',
+            border: 'none',
+            borderRadius: '0.5rem'
+          }}
+        >
+          Visão Geral
+        </button>
+        <button 
+          onClick={() => setActiveTab('schedule')}
+          style={{
+            flex: 1,
+            padding: '0.75rem',
+            backgroundColor: activeTab === 'schedule' ? '#3b82f6' : '#bfdbfe',
+            color: activeTab === 'schedule' ? 'white' : '#1e40af',
+            fontWeight: activeTab === 'schedule' ? 'bold' : 'normal',
+            border: 'none',
+            borderRadius: '0.5rem'
+          }}
+        >
+          Minha Agenda
+        </button>
       </div>
 
       {/* Cards de métricas rápidas */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
         {/* Consultas Hoje */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center gap-4">
-          <div className="bg-blue-100 p-3 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Consultas Hoje</p>
-            <p className="text-2xl font-bold text-gray-900">4</p>
+        <div style={{ border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '2.5rem', height: '2.5rem', backgroundColor: '#bfdbfe', borderRadius: '0.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+            </div>
+            <div>
+              <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Consultas Hoje</p>
+              <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827' }}>4</p>
+            </div>
           </div>
         </div>
 
         {/* Pacientes Ativos */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center gap-4">
-          <div className="bg-green-100 p-3 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.95"></path>
-              <path d="M23 14H20"></path>
-              <path d="M17 17H20"></path>
-              <path d="M20 21h-3"></path>
-              <path d="M17 17v-3"></path>
-              <path d="M23 14v3"></path>
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Pacientes Ativos</p>
-            <p className="text-2xl font-bold text-gray-900">12</p>
-          </div>
-        </div>
-
-        {/* Online Hoje */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center gap-4">
-          <div className="bg-purple-100 p-3 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22.54 16.88A4 4 0 0 0 19 10h-1.26A8 8 0 0 1 9 20h-2c-3.3 0-6-2.7-6-6 0-3.22 2.6-5.9 5.74-5.9a4.01 4.01 0 0 0 0 8H1"></path>
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Online Hoje</p>
-            <p className="text-2xl font-bold text-gray-900">2</p>
-          </div>
-        </div>
-
-        {/* Primeira Vez */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center gap-4">
-          <div className="bg-orange-100 p-3 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 12h-4L18 5L12 9L6 5M22 12H2"></path>
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Primeira Vez</p>
-            <p className="text-2xl font-bold text-gray-900">1</p>
+        <div style={{ border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '2.5rem', height: '2.5rem', backgroundColor: '#bbf7d0', borderRadius: '0.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.95" />
+                <path d="M23 14H20" />
+              </svg>
+            </div>
+            <div>
+              <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Pacientes Ativos</p>
+              <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827' }}>12</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Consultas do Dia */}
-        <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <Clock className="w-5 h-5 text-blue-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Consultas de Hoje</h2>
-          </div>
-
-          <div className="space-y-4">
-            {todayAppointments.map((appointment) => (
-              <div key={appointment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  {/* Bolinha de status */}
-                  <div className={`w-3 h-3 rounded-full ${appointment.type === 'online' ? 'bg-purple-500' : 'bg-green-500'}`}></div>
-                  <div>
-                    <p className="font-medium">{appointment.patient}</p>
-                    <p className="text-sm text-gray-500">
-                      {appointment.time && `${appointment.time} • `}
-                      {appointment.type === 'online' ? 'Online' : 'Presencial'}
-                      {appointment.isFirst && ' • Primeira consulta'}
-                    </p>
-                  </div>
+      {/* Consultas do Dia */}
+      <div style={{ border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem', marginBottom: '1.5rem' }}>
+        <h2 style={{ fontWeight: 'bold', marginBottom: '1rem' }}>Consultas de Hoje</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          {todayAppointments.map((app) => (
+            <div key={app.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: '#f9fafb', borderRadius: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ width: '0.75rem', height: '0.75rem', backgroundColor: app.type === 'online' ? '#a78bfa' : '#10b981', borderRadius: '9999px' }}></div>
+                <div>
+                  <p>{app.patient}</p>
+                  <small>{app.time} • {app.type === 'online' ? 'Online' : 'Presencial'}</small>
                 </div>
-                {appointment.type === 'online' && (
-                  <button className="px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium hover:bg-purple-200 transition-colors">
-                    Iniciar
-                  </button>
-                )}
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Pacientes Ativos */}
-        <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <FileText className="w-5 h-5 text-green-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Pacientes Ativos</h2>
-          </div>
-
-          <div className="space-y-4">
-            {activePatients.map((patient) => (
-              <div key={patient.id} className="p-4 bg-gray-50 rounded-lg border-l-4 border-blue-400">
-                <p className="font-medium">{patient.name}</p>
-                <p className="text-sm text-gray-600">Próxima sessão: {new Date(patient.nextSession).toLocaleDateString('pt-BR')}</p>
-                <span className={`inline-block mt-2 px-2 py-1 rounded-full text-xs font-semibold ${getBadgeClass(patient.progress)}`}>
-                  {patient.progress}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
+              {app.type === 'online' && (
+                <button style={{ backgroundColor: '#d8b4fe', color: '#7c3aed', padding: '0.25rem 0.5rem', borderRadius: '9999px' }}>
+                  Iniciar
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Acesso rápido à agenda */}
-      <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-xl shadow-sm p-6">
-        <div className="flex items-center justify-between text-white">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Gerencie sua Agenda</h3>
-            <p className="text-blue-100">Defina seus horários disponíveis para agendamentos</p>
-          </div>
-          <button
-            onClick={() => setActiveTab('schedule')}
-            className="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center gap-2"
-          >
-            <CalendarCheck className="w-5 h-5" />
-            Abrir Agenda
-          </button>
+      {/* Pacientes Ativos */}
+      <div style={{ border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.5rem' }}>
+        <h2 style={{ fontWeight: 'bold', marginBottom: '1rem' }}>👥 Pacientes Ativos</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          {activePatients.map((patient) => (
+            <div key={patient.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: '#f9fafb', borderRadius: '0.5rem' }}>
+              <div>{patient.name}</div>
+              <span style={{
+                backgroundColor: patient.progress === 'Positiva' ? '#dcfce7' : '#fef3c7',
+                color: patient.progress === 'Positiva' ? '#166534' : '#92400e',
+                padding: '0.25rem 0.5rem',
+                borderRadius: '9999px',
+                fontSize: '0.75rem'
+              }}>{patient.progress}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
-}
-
-function getBadgeClass(status) {
-  switch (status) {
-    case "Positiva":
-      return "bg-green-100 text-green-800";
-    case "Estável":
-      return "bg-yellow-100 text-yellow-800";
-    default:
-      return "bg-gray-100 text-gray-800";
-  }
 }

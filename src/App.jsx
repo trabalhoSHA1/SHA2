@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './features/login/Login';
 import ProtectedRoute from './context/ProtectedRoute';
-import Layout from './components/layout/Layout';
+import Layout from './components/layout/Layout'; 
 import TherapistDashboard from './components/dashboard/TherapistDashboard';
 
 function App() {
@@ -14,9 +14,9 @@ function App() {
         {/* Rotas protegidas */}
         <Route element={<ProtectedRoute allowedRoles={['therapist']} />}>
           <Route
-            path="/dashboard/TherapistDashboard"
+            path="/dashboard/therapist"
             element={
-              <Layout>
+              <Layout> {/* ✅ Usa o Layout completo */}
                 <TherapistDashboard />
               </Layout>
             }

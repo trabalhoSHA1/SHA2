@@ -1,6 +1,6 @@
 // src/components/layout/Header.jsx
 import React from 'react';
-import { useAuth } from '../../context/AuthContext'; // Acessa o contexto de autenticação
+import { useAuth } from '../../context/auth';
 
 const Header = () => {
   const { user } = useAuth();
@@ -33,6 +33,8 @@ const Header = () => {
         <div className="relative">
           <button className="p-2 rounded-full bg-blue-500 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M23 20H2"></path>
             </svg>
           </button>
           <span className="absolute top-0 right-0 inline-block w-4 h-4 bg-red-500 rounded-full text-white text-xs">2</span>
