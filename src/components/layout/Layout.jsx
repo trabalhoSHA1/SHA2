@@ -1,3 +1,4 @@
+// src/components/layout/Layout.jsx
 import React from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -5,7 +6,7 @@ import Header from './Header';
 export default function Layout({ children }) {
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+      {/* Barra lateral */}
       <Sidebar />
 
       {/* Conteúdo principal */}
