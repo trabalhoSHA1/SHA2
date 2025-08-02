@@ -4,15 +4,17 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 
 export default function Layout({ children }) {
+  console.log('рендерizando Layout');
+  
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Barra lateral */}
+      {/* Sidebar */}
       <Sidebar />
-
+      
       {/* Conteúdo principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col min-h-0">
         <Header />
-        <main className="p-6 overflow-auto bg-gray-100">
+        <main className="flex-1 overflow-auto p-6">
           {children}
         </main>
       </div>
