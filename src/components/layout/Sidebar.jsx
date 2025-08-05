@@ -9,7 +9,7 @@ export default function Sidebar() {
 
   return (
     <aside className={`${isExpanded ? 'w-48' : 'w-20'} bg-gray-800 text-white flex flex-col items-center py-6 space-y-8 h-screen transition-all duration-300 relative`}>
-      {/* Botão de toggle - POSICIONADO CORRETAMENTE */}
+      {/* Botão de toggle */}
       <button
         className={`absolute top-4 ${isExpanded ? 'left-30' : 'left-6'} bg-gray-700 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-600 transition-all duration-300 z-10`}
         onClick={() => setIsExpanded(!isExpanded)}

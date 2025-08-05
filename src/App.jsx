@@ -9,6 +9,9 @@ import SettingsPage from './pages/SettingsPage';
 import PatientMedicalRecord from './pages/PatientMedicalRecord';
 import PatientDetailPage from './pages/PatientDetailPage';
 import PatientRecordsPage from './pages/PatientRecordsPage';
+import ProfilePage from './pages/ProfilePage';
+import MySchedulePage from './pages/AppointmentsPage';
+import AppointmenstPage from './pages/AppointmentsPage';
 
 function App() {
   return (
@@ -57,7 +60,21 @@ function App() {
               <PatientRecordsPage />
             </Layout>
           } />
+
+          {/* Rota para consultas */}
+          <Route path="consultas" element={
+            <Layout>
+              <AppointmenstPage />
+            </Layout>
+          } />
           
+           {/* Rota para perfil */}
+          <Route path="/profile" element={
+            <Layout>
+              <ProfilePage />
+            </Layout>
+          } />
+
           {/* Rota padrão */}
           <Route path="/" element={<Login />} />
         </Routes>

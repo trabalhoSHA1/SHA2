@@ -6,7 +6,6 @@ import { Eye, Edit, Trash, FileText } from 'lucide-react';
 export default function PatientList() {
   console.log('рендерizando Lista de Pacientes');
 
-  // ✅ NOMES CORRETOS (sem Dr/Dra)
   const [patients, setPatients] = useState([
     {
       name: 'Maria Silva Santos',       
