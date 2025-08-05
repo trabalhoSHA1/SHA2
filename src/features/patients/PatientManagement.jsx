@@ -1,8 +1,6 @@
-// src/features/patients/PatientManagement.jsx
-// ou se estiver em src/components/patients/PatientManagement.jsx, ajuste o import la no PatientPage.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, Edit, Trash, FileText } from 'lucide-react'; // ✅ Usando FileText
+import { Eye, Edit, Trash, FileText } from 'lucide-react'; 
 
 export default function PatientManagement() {
   console.log('рендерizando Gerenciamento de Pacientes');

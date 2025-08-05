@@ -9,8 +9,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     console.log('Login chamado com:', userData);
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    const userWithSiape = {
+      ...userData,
+      siape: userData.siape || '123456789' 
+    };
+    setUser(userWithSiape);
+    localStorage.setItem('user', JSON.stringify(userWithSiape));
   };
 
   const logout = () => {

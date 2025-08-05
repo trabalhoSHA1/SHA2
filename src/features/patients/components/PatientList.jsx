@@ -1,93 +1,125 @@
-// features/patients/components/PatientList.jsx
-import React from 'react';
-import { User, Phone, Calendar } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+// src/components/patients/PatientList.jsx
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Eye, Edit, Trash, FileText } from 'lucide-react';
 
 export default function PatientList() {
-  // Dados de exemplo - depois virão da API
-  const patients = [
+  console.log('рендерizando Lista de Pacientes');
+
+  // ✅ NOMES CORRETOS (sem Dr/Dra)
+  const [patients, setPatients] = useState([
     {
-      id: 1,
-      name: "Maria Silva",
+      name: 'Maria Silva Santos',       
+      siape: '123456789',
+      contact: '(11) 99999-9999',
+      email: 'maria.silva@email.com',
       age: 35,
-      phone: "(11) 99999-9999",
-      lastVisit: "15/01/2024",
-      status: "Ativo",
-      color: "green"
+      gender: 'Feminino',
+      diagnosis: 'Ansiedade Generalizada',
+      nextAppointment: '15/01/2024',
+      status: 'Ativo'
     },
     {
-      id: 2,
-      name: "João Santos",
+      name: 'João Costa Pereira',       
+      siape: '987654321',
+      contact: '(11) 88888-8888',
+      email: 'joao.costa@email.com',
       age: 28,
-      phone: "(11) 88888-8888",
-      lastVisit: "10/01/2024",
-      status: "Novo",
-      color: "blue"
+      gender: 'Masculino',
+      diagnosis: 'Depressão Maior',
+      nextAppointment: '16/01/2024',
+      status: 'Ativo'
     },
     {
-      id: 3,
-      name: "Ana Costa",
+      name: 'Ana Oliveira Rodrigues',
+      siape: '456789123',
+      contact: '(11) 77777-7777',
+      email: 'ana.oliveira@email.com',
       age: 42,
-      phone: "(11) 77777-7777",
-      lastVisit: "05/01/2024",
-      status: "Em acompanhamento",
-      color: "yellow"
+      gender: 'Feminino',
+      diagnosis: 'Transtorno do Humor',
+      nextAppointment: '20/01/2024',
+      status: 'Ativo'
+    },
+    {
+      name: 'Carlos Mendes Almeida',    
+      siape: '321654987',
+      contact: '(11) 66666-6666',
+      email: 'carlos.mendes@email.com',
+      age: 31,
+      gender: 'Masculino',
+      diagnosis: 'TOC',
+      nextAppointment: '22/01/2024',
+      status: 'Ativo'
     }
-  ];
+  ]);
 
   return (
-    <Card className="bg-white">
-      <CardContent className="p-4 space-y-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-green-800">
-            Pacientes Ativos
-          </h2>
-          <Button variant="outline" size="sm">
-            Ver todos
-          </Button>
-        </div>
-        
-        <div className="space-y-3">
-          {patients.map((patient) => (
-            <div
-              key={patient.id}
-              className="bg-gray-50 p-3 rounded-xl flex justify-between items-center shadow-sm hover:bg-gray-100 transition-colors cursor-pointer"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-green-600" />
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      {/* Cabeçalho */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold text-gray-800">Seus Pacientes</h1>
+      </div>
+
+      {/* Seção de busca */}
+      <div className="mb-4 flex items-center space-x-4">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7 7 0 103 12a7 7 0 0014 0z" />
+        </svg>
+        <input
+          type="text"
+          placeholder="Buscar pacientes por nome, email ou diagnóstico..."
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
+        />
+        <select className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-500">
+          <option value="all">Todos os tipos</option>
+          <option value="active">Ativos</option>
+          <option value="inactive">Inativos</option>
+        </select>
+      </div>
+
+      {/* Cards de pacientes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {patients.map((patient, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-md p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                  {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
                 </div>
                 <div>
-                  <p className="font-semibold">{patient.name}</p>
-                  <div className="flex items-center space-x-2 text-sm text-gray-500">
-                    <span>{patient.age} anos</span>
-                    <Phone className="w-3 h-3" />
-                    <span>{patient.phone}</span>
-                  </div>
+                  <h2 className="text-lg font-medium">{patient.name}</h2> 
+                  <p className="text-sm text-gray-500">CPF: {patient.siape}</p>
                 </div>
               </div>
-              
+              {/* Ícones de ação */}
               <div className="flex items-center space-x-2">
-                <Badge 
-                  className={
-                    patient.color === "green" ? "bg-green-100 text-green-800" :
-                    patient.color === "blue" ? "bg-blue-100 text-blue-800" :
-                    "bg-yellow-100 text-yellow-800"
-                  }
-                >
-                  {patient.status}
-                </Badge>
-                <div className="text-right text-xs text-gray-500">
-                  <Calendar className="w-3 h-3 inline mr-1" />
-                  {patient.lastVisit}
-                </div>
+                <Link to={`/patients/${patient.siape}`}>
+                  <Eye className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
+                </Link>
+                <Link to={`/patients/${patient.siape}/records`}>
+                  <FileText className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
+                </Link>
               </div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <div className="mt-2">
+              <p className="text-sm font-medium">Contato:</p>
+              <p className="text-sm">{patient.contact}</p>
+              <p className="text-sm">{patient.email}</p>
+            </div>
+            <div className="mt-2">
+              <p className="text-sm font-medium">Diagnóstico:</p>
+              <p className="text-sm">{patient.diagnosis}</p>
+            </div>
+            <div className="mt-2">
+              <p className="text-sm font-medium">Próxima consulta: {patient.nextAppointment}</p>
+              <p className={`text-sm ${patient.status === 'Ativo' ? 'text-green-500' : 'text-red-500'}`}>
+                {patient.status}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

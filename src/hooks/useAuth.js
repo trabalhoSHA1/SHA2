@@ -7,7 +7,7 @@ export const useAuth = () => {
   
   if (!context) {
     console.warn('useAuth deve ser usado dentro de um AuthProvider');
-    return null;
+    return { user: null, loading: false, login: () => {}, logout: () => {} };
   }
   
   return context;
