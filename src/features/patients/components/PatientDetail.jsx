@@ -10,19 +10,19 @@ export default function PatientDetail() {
   
   // Dados simulados do paciente
   const patient = {
-    name: '',
+    name: 'Maria Silva Santos',
     siape: siape,
     age: 35,
+    gender: 'Feminino',
     contact: '(11) 99999-9999',
-    email: 'joao.santos@universidade.edu.br',
-    specializations: ['Psicoterapia', 'Terapia Familiar'],
-    firstVisit: '15/01/2024',
-    lastVisit: '25/01/2024',
-    status: 'Ativo',
+    email: 'maria.silva@email.com',
     address: 'Rua das Flores, 123 - São Paulo/SP',
     emergencyContact: '(11) 98888-8888',
     bloodType: 'O+',
     allergies: 'Penicilina',
+    firstVisit: '15/01/2024',
+    lastVisit: '25/01/2024',
+    status: 'Ativo',
     observations: 'Paciente com histórico de ansiedade generalizada'
   };
 
@@ -44,7 +44,7 @@ export default function PatientDetail() {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center space-x-4 mb-6">
           <div className="bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold">
-            {patient.name.charAt(0)}
+            {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900">{patient.name}</h2>
@@ -104,8 +104,6 @@ export default function PatientDetail() {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Informações Profissionais</h3>
             <div className="space-y-3">
               <div>
-              </div>
-              <div>
                 <p className="text-sm font-medium text-gray-500">Primeira Visita</p>
                 <p className="text-sm font-semibold">{patient.firstVisit}</p>
               </div>
@@ -129,4 +127,4 @@ export default function PatientDetail() {
       </div>
     </div>
   );
-}
+} 

@@ -10,8 +10,8 @@ import PatientMedicalRecord from './pages/PatientMedicalRecord';
 import PatientDetailPage from './pages/PatientDetailPage';
 import PatientRecordsPage from './pages/PatientRecordsPage';
 import ProfilePage from './pages/ProfilePage';
-import MySchedulePage from './pages/AppointmentsPage';
-import AppointmenstPage from './pages/AppointmentsPage';
+import AppointmentsPage from './pages/AppointmentsPage';
+import AllMedicalRecordsPage from './pages/AllMedicalRecordsPage';
 
 function App() {
   return (
@@ -46,6 +46,12 @@ function App() {
               <PatientMedicalRecord />
             </Layout>
           } />
+            {/* Rota para todos os prontuários */}
+          <Route path="/prontuarios" element={
+           <Layout>
+              <AllMedicalRecordsPage />
+           </Layout>
+          } />
           
           {/* Rota para detalhes do paciente */}
           <Route path="/patients/:siape" element={
@@ -62,12 +68,12 @@ function App() {
           } />
 
           {/* Rota para consultas */}
-          <Route path="consultas" element={
+          <Route path="appointments" element={
             <Layout>
-              <AppointmenstPage />
+              <AppointmentsPage />
             </Layout>
           } />
-          
+
            {/* Rota para perfil */}
           <Route path="/profile" element={
             <Layout>

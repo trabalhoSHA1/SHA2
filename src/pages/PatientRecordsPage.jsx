@@ -12,14 +12,12 @@ export default function PatientRecordsPage() {
   
   console.log('рендерizando Página de Prontuários do Paciente:', siape);
   
-  // ✅ SIMULAR TERAPEUTA LOGADO
   const loggedTherapist = {
     name: 'Dr. João Santos Silva',
     role: 'Psicólogo Clínico',
     registration: 'CRP-123456'
   };
 
-  // ✅ PRONTUÁRIOS FILTRADOS APENAS DO TERAPEUTA LOGADO
   const [records, setRecords] = useState([
     {
       id: 1,
@@ -30,7 +28,7 @@ export default function PatientRecordsPage() {
       status: 'Concluído',
       createdAt: '2024-01-15T10:00:00Z',
       therapist: {
-        name: 'Dr. João Santos Silva',    // ✅ Terapeuta logado
+        name: 'Dr. João Santos Silva',   
         role: 'Psicólogo Clínico',
         registration: 'CRP-123456'
       },
@@ -45,7 +43,7 @@ export default function PatientRecordsPage() {
       status: 'Concluído',
       createdAt: '2024-01-22T11:30:00Z',
       therapist: {
-        name: 'Dr. João Santos Silva',    // ✅ Terapeuta logado
+        name: 'Dr. João Santos Silva',   
         role: 'Psicólogo Clínico',
         registration: 'CRP-123456'
       },
@@ -60,7 +58,7 @@ export default function PatientRecordsPage() {
       status: 'Agendado',
       createdAt: '2024-01-29T09:00:00Z',
       therapist: {
-        name: 'Dra. Ana Costa Pereira',   // ❌ Outro terapeuta (não aparece!)
+        name: 'Dra. Ana Costa Pereira',  
         role: 'Terapeuta Cognitivo Comportamental',
         registration: 'CRP-789012'
       },
@@ -68,7 +66,6 @@ export default function PatientRecordsPage() {
     }
   ]);
 
-  // ✅ FILTRAR APENAS PRONTUÁRIOS DO TERAPEUTA LOGADO
   const filteredRecords = records.filter(record => 
     record.therapist.name === loggedTherapist.name
   );
