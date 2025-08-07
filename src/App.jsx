@@ -12,6 +12,7 @@ import PatientRecordsPage from './pages/PatientRecordsPage';
 import ProfilePage from './pages/ProfilePage';
 import AppointmentsPage from './pages/AppointmentsPage';
 import AllMedicalRecordsPage from './pages/AllMedicalRecordsPage';
+import SchedulePage from './pages/SchedulePage';
 
 function App() {
   return (
@@ -25,6 +26,12 @@ function App() {
           <Route path="/dashboard/therapist" element={
             <Layout>
               <TherapistDashboard />
+            </Layout>
+          } />
+
+           <Route path="/schedule" element={
+            <Layout>
+              <SchedulePage />
             </Layout>
           } />
           

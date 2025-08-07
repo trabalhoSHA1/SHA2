@@ -10,5 +10,5 @@ export default function PatientPage() {
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Gerenciamento de Pacientes</h1>
       <PatientList />
     </div>
-  );
+  ); 
 }
