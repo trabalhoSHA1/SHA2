@@ -3,7 +3,10 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './features/login/Login';
 import Layout from './components/layout/Layout';
+import Register from './features/register/Register';
 import TherapistDashboard from './components/dashboards/TherapistDashboard';
+import AdminDashboard from './components/dashboards/AdminDashboard';
+import AssistantDashboard from './components/dashboards/AssistantDashboard';
 import PatientPage from './pages/PatientPage';
 import SettingsPage from './pages/SettingsPage';
 import PatientMedicalRecord from './pages/PatientMedicalRecord';
@@ -15,20 +18,45 @@ import AllMedicalRecordsPage from './pages/AllMedicalRecordsPage';
 import SchedulePage from './pages/SchedulePage';
 
 function App() {
+
+  const therapistRole = 'therapist';
+  const adminRole = 'admin';
+  const assistantRole = 'assistant'; 
+
   return (
     <div className="h-screen w-screen overflow-hidden">
       <BrowserRouter>
         <Routes>
           {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
-          
+          <Route path="/register" element={<Register />} />
           {/* Rotas protegidas */}
-          <Route path="/dashboard/therapist" element={
-            <Layout>
-              <TherapistDashboard />
-            </Layout>
-          } />
+          <Route
+            path="/dashboard/therapist"
+            element={
+              <Layout role={therapistRole}>
+                <TherapistDashboard />
+              </Layout>
+            }
+          />
 
+          <Route
+            path="/dashboard/admin"
+            element={
+              <Layout role={adminRole}>
+                <AdminDashboard />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/dashboard/assistant"
+            element={
+              <Layout role={assistantRole}>
+                <AssistantDashboard />
+              </Layout>
+            }
+          />
            <Route path="/schedule" element={
             <Layout>
               <SchedulePage />

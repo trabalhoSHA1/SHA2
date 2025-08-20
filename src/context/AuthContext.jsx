@@ -8,48 +8,33 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const login = (userData) => {
-    console.log('Login chamado com:', userData);
     const userWithSiape = {
       ...userData,
-      siape: userData.siape || '123456789' 
+      siape: userData.siape || '123456789'
     };
     setUser(userWithSiape);
     localStorage.setItem('user', JSON.stringify(userWithSiape));
   };
 
   const logout = () => {
-    console.log('Logout chamado');
     setUser(null);
     localStorage.removeItem('user');
   };
 
   useEffect(() => {
-    console.log('Verificando usuário salvo...');
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       try {
-        const userData = JSON.parse(savedUser);
-        console.log('Usuário encontrado:', userData);
-        setUser(userData);
-      } catch (error) {
-        console.error('Erro ao parsear usuário do localStorage:', error);
+        setUser(JSON.parse(savedUser));
+      } catch {
         localStorage.removeItem('user');
       }
     }
     setLoading(false);
   }, []);
 
-  const value = {
-    user,
-    login,
-    logout,
-    loading
-  };
-
-  console.log('AuthContext value:', value);
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
