@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Bell } from 'lucide-react';
 
+function capitalize(str) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
 export default function Header() {
   const { user } = useAuth();
 
-  // Capitaliza a primeira letra do role
-  const formattedRole = user?.role
-    ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
-    : 'Usuário';
+  const formattedRole = capitalize(user?.role);
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
@@ -56,7 +57,6 @@ export default function Header() {
           </span>
         </div>
 
-        {/* Usuário agora mostra o role correto */}
         <Link
           to="/perfil"
           className="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-xl shadow-sm hover:bg-gray-200 transition-colors"

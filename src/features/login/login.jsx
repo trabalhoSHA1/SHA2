@@ -1,72 +1,87 @@
 // src/features/login/Login.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import { AuthContext } from '@/context/AuthContext';
 
 export default function Login() {
   const [userType, setUserType] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!userType) {
-      alert('Selecione um tipo de usuário');
-      return;
-    }
+    if (!userType) return alert('Selecione um tipo de usuário');
 
-    // Simula login com tipo de usuário
+    setLoading(true);
+
     const userData = {
       id: 1,
-      name: userType === 'Administrador' ? 'Admin' :
-            userType === 'Terapeuta' ? 'Dr. João' : 'Ana Assistente',
+      name: username || (userType === 'Administrador' ? 'Admin' :
+                        userType === 'Terapeuta' ? 'Terapeuta' : 'Assistente'),
       role: userType === 'Administrador' ? 'admin' :
-             userType === 'Terapeuta' ? 'therapist' : 'assistant'
+            userType === 'Terapeuta' ? 'therapist' : 'assistant'
     };
 
-    // Salva no localStorage pra simular autenticação
-    localStorage.setItem('user', JSON.stringify(userData));
+    login(userData);
 
-    // Redireciona
-    if (userData.role === 'admin') {
-      navigate('/dashboard/admin');
-    } else if (userData.role === 'therapist') {
-      navigate('/dashboard/therapist');
-    } else if (userData.role === 'assistant') {
-      navigate('/dashboard/assistant');
-    }
+    if (userData.role === 'admin') navigate('/dashboard/admin');
+    else if (userData.role === 'therapist') navigate('/dashboard/therapist');
+    else navigate('/dashboard/assistant');
+
+    setLoading(false);
   }
 
   return (
-    <div className="login-wrapper">
-      <form className="login-container" onSubmit={handleSubmit}>
-        <h1>SHA</h1>
-        <p className="subtitle">Sistema de Humanização e Acolhimento</p>
+    <div className="min-h-screen flex items-center justify-center bg-green-50 p-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl shadow-lg w-full max-w-md p-8 flex flex-col gap-6"
+      >
+        <h1 className="text-3xl font-bold text-black-900 text-center">SHA</h1>
+        <p className="text-center text-black-700">Sistema de Humanização e Acolhimento</p>
 
-        <div className="input-group">
-          <select
-            required
-            value={userType}
-            onChange={(e) => setUserType(e.target.value)}
-          >
-            <option value="" disabled hidden>Tipo de Usuário</option>
-            <option value="Administrador">Administrador</option>
-            <option value="Terapeuta">Terapeuta</option>
-            <option value="Assistente Administrativo">Assistente Administrativo</option>
-          </select>
-        </div>
+        <select
+          required
+          value={userType}
+          onChange={(e) => setUserType(e.target.value)}
+          className="border border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
+        >
+          <option value="" disabled hidden>Tipo de Usuário</option>
+          <option value="Administrador">Administrador</option>
+          <option value="Terapeuta">Terapeuta</option>
+          <option value="Assistente Administrativo">Assistente Administrativo</option>
+        </select>
 
-        <div className="input-group">
-          <input type="text" placeholder="Usuário" required />
-        </div>
+        <input
+          type="text"
+          placeholder="Usuário"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
+        />
 
-        <div className="input-group">
-          <input type="password" placeholder="Senha" required />
-        </div>
+        <input
+          type="password"
+          placeholder="Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
+        />
 
-        <button type="submit">Entrar no SHA</button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-green-500 hover:bg-green-400 text-white font-semibold py-2 rounded transition-colors disabled:opacity-50"
+        >
+          {loading ? 'Entrando...' : 'Entrar no SHA'}
+        </button>
 
-        <p className="register-link">
-          Não tem uma conta? <a href="/register">Registre-se</a>
+        <p className="text-center text-sm text-green-700">
+          Não tem uma conta? <a href="/register" className="underline">Registre-se</a>
         </p>
       </form>
     </div>

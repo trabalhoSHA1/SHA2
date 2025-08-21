@@ -30,6 +30,7 @@ function App() {
           {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
           {/* Rotas protegidas */}
           <Route
             path="/dashboard/therapist"
