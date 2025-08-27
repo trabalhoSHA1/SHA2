@@ -1,7 +1,7 @@
 // src/pages/AllMedicalRecordsPage.jsx
 import React, { useState } from 'react';
-import Layout from '../components/layout/Layout';
-import MedicalRecordList from '../features/records/MedicalRecordList';
+import MedicalRecordList from "../../features/records/MedicalRecordList";
+
 
 export default function AllMedicalRecordsPage() {
   console.log('рендерizando Página de Todos os Prontuários');

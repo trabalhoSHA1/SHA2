@@ -1,124 +1,94 @@
-// src/components/patients/PatientList.jsx
-import React, { useState } from 'react';
+// src/features/patients/components/PatientList.jsx
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, Edit, Trash, FileText } from 'lucide-react';
 
-export default function PatientList() {
-  console.log('рендерizando Lista de Pacientes');
-
-  const [patients, setPatients] = useState([
-    {
-      name: 'Maria Silva Santos',       
-      siape: '123456789',
-      contact: '(11) 99999-9999',
-      email: 'maria.silva@email.com',
-      age: 35,
-      gender: 'Feminino',
-      diagnosis: 'Ansiedade Generalizada',
-      nextAppointment: '15/01/2024',
-      status: 'Ativo'
-    },
-    {
-      name: 'João Costa Pereira',       
-      siape: '987654321',
-      contact: '(11) 88888-8888',
-      email: 'joao.costa@email.com',
-      age: 28,
-      gender: 'Masculino',
-      diagnosis: 'Depressão Maior',
-      nextAppointment: '16/01/2024',
-      status: 'Ativo'
-    },
-    {
-      name: 'Ana Oliveira Rodrigues',
-      siape: '456789123',
-      contact: '(11) 77777-7777',
-      email: 'ana.oliveira@email.com',
-      age: 42,
-      gender: 'Feminino',
-      diagnosis: 'Transtorno do Humor',
-      nextAppointment: '20/01/2024',
-      status: 'Ativo'
-    },
-    {
-      name: 'Carlos Mendes Almeida',    
-      siape: '321654987',
-      contact: '(11) 66666-6666',
-      email: 'carlos.mendes@email.com',
-      age: 31,
-      gender: 'Masculino',
-      diagnosis: 'TOC',
-      nextAppointment: '22/01/2024',
-      status: 'Ativo'
-    }
-  ]);
+export default function PatientList({
+  patients = [],
+  canEdit = false,
+  showTherapistColumn = false,
+  showRecordsButton = true,
+  showDeleteButton = false,
+}) {
+  console.log('рендерizando PatientList genérico');
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      {/* Cabeçalho */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">Seus Pacientes</h1>
-      </div>
-
-      {/* Seção de busca */}
-      <div className="mb-4 flex items-center space-x-4">
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-5.197-5.197m0 0A7 7 0 103 12a7 7 0 0014 0z" />
-        </svg>
-        <input
-          type="text"
-          placeholder="Buscar pacientes por nome, email ou diagnóstico..."
-          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-green-500"
-        />
-        <select className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-500">
-          <option value="all">Todos os tipos</option>
-          <option value="active">Ativos</option>
-          <option value="inactive">Inativos</option>
-        </select>
-      </div>
-
-      {/* Cards de pacientes */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {patients.map((patient, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-md p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center">
-                  {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
-                </div>
-                <div>
-                  <h2 className="text-lg font-medium">{patient.name}</h2> 
-                  <p className="text-sm text-gray-500">CPF: {patient.siape}</p>
-                </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {patients.map((patient, index) => (
+        <div key={index} className="bg-white rounded-lg shadow-md p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
               </div>
-              {/* Ícones de ação */}
-              <div className="flex items-center space-x-2">
-                <Link to={`/patients/${patient.siape}`}>
-                  <Eye className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
-                </Link>
+              <div>
+                <h2 className="text-lg font-medium">{patient.name}</h2>
+                <p className="text-sm text-gray-500">CPF: {patient.siape}</p>
+                {showTherapistColumn && (
+                  <p className="text-sm text-gray-500">Terapeuta: {patient.therapistName}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Link to={`/patients/${patient.siape}`}>
+                <Eye className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
+              </Link>
+
+              {showRecordsButton && (
                 <Link to={`/patients/${patient.siape}/records`}>
                   <FileText className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
                 </Link>
-              </div>
-            </div>
-            <div className="mt-2">
-              <p className="text-sm font-medium">Contato:</p>
-              <p className="text-sm">{patient.contact}</p>
-              <p className="text-sm">{patient.email}</p>
-            </div>
-            <div className="mt-2">
-              <p className="text-sm font-medium">Diagnóstico:</p>
-              <p className="text-sm">{patient.diagnosis}</p>
-            </div>
-            <div className="mt-2">
-              <p className="text-sm font-medium">Próxima consulta: {patient.nextAppointment}</p>
-              <p className={`text-sm ${patient.status === 'Ativo' ? 'text-green-500' : 'text-red-500'}`}>
-                {patient.status}
-              </p>
+              )}
+
+              {canEdit && (
+                <Link to={`/patients/edit/${patient.siape}`}>
+                  <Edit className="w-5 h-5 text-blue-500 hover:text-blue-700 cursor-pointer" />
+                </Link>
+              )}
+
+              {showDeleteButton && (
+                <button
+                  onClick={() => alert(`Excluir paciente: ${patient.name}`)}
+                >
+                  <Trash className="w-5 h-5 text-red-500 hover:text-red-700 cursor-pointer" />
+                </button>
+              )}
             </div>
           </div>
-        ))}
-      </div>
+
+          <div className="mt-2">
+            <p className="text-sm font-medium">Contato:</p>
+            <p className="text-sm">{patient.contact}</p>
+            <p className="text-sm">{patient.email}</p>
+          </div>
+
+          {patient.specializations && patient.specializations.length > 0 && (
+            <div className="mt-2">
+              <p className="text-sm font-medium">Especialidades:</p>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {patient.specializations.map((spec, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs"
+                  >
+                    {spec}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {patient.firstVisitDuration && patient.normalVisitDuration && (
+            <div className="mt-2">
+              <p className="text-sm font-medium">Tempo por atendimento:</p>
+              <p className="text-sm">
+                Primeira vez: {patient.firstVisitDuration} | Normal: {patient.normalVisitDuration}
+              </p>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

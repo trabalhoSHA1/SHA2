@@ -1,37 +1,41 @@
 // src/features/login/Login.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { AuthContext } from '@/context/AuthContext';
 
 export default function Login() {
   const [userType, setUserType] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!userType) {
-      alert('Selecione um tipo de usuário');
+
+    if (!userType || !username || !password) {
+      alert('Preencha todos os campos e selecione um tipo de usuário');
       return;
     }
 
-    // Simula login com tipo de usuário
+    // Cria usuário simulado para testes
     const userData = {
-      id: 1,
-      name: userType === 'Administrador' ? 'Admin' :
-            userType === 'Terapeuta' ? 'Dr. João' : 'Ana Assistente',
+      id: Date.now(), // id genérico
+      name: username, // usa o que foi digitado
       role: userType === 'Administrador' ? 'admin' :
-             userType === 'Terapeuta' ? 'therapist' : 'assistant'
+            userType === 'Terapeuta' ? 'therapist' : 'assistant'
     };
 
-    // Salva no localStorage pra simular autenticação
-    localStorage.setItem('user', JSON.stringify(userData));
+    // Salva no contexto (e no localStorage)
+    login(userData);
 
-    // Redireciona
+    // Redireciona para dashboard conforme role
     if (userData.role === 'admin') {
       navigate('/dashboard/admin');
     } else if (userData.role === 'therapist') {
       navigate('/dashboard/therapist');
-    } else if (userData.role === 'assistant') {
+    } else {
       navigate('/dashboard/assistant');
     }
   }
@@ -56,11 +60,23 @@ export default function Login() {
         </div>
 
         <div className="input-group">
-          <input type="text" placeholder="Usuário" required />
+          <input
+            type="text"
+            placeholder="Usuário"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
 
         <div className="input-group">
-          <input type="password" placeholder="Senha" required />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
 
         <button type="submit">Entrar no SHA</button>

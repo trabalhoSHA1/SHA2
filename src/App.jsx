@@ -7,15 +7,15 @@ import Register from './features/register/Register';
 import TherapistDashboard from './components/dashboards/TherapistDashboard';
 import AdminDashboard from './components/dashboards/AdminDashboard';
 import AssistantDashboard from './components/dashboards/AssistantDashboard';
-import PatientPage from './pages/PatientPage';
-import SettingsPage from './pages/SettingsPage';
-import PatientMedicalRecord from './pages/PatientMedicalRecord';
-import PatientDetailPage from './pages/PatientDetailPage';
-import PatientRecordsPage from './pages/PatientRecordsPage';
-import ProfilePage from './pages/ProfilePage';
-import AppointmentsPage from './pages/AppointmentsPage';
-import AllMedicalRecordsPage from './pages/AllMedicalRecordsPage';
-import SchedulePage from './pages/SchedulePage';
+import PatientPage from './pages/shared/PatientPage';
+import SettingsPage from './pages/shared/SettingsPage';
+import PatientMedicalRecord from './pages/terapeutas/PatientMedicalRecord';
+import PatientDetailPage from './pages/terapeutas/PatientDetailPage';
+import PatientRecordsPage from './pages/terapeutas/PatientRecordsPage';
+import ProfilePage from './pages/shared/ProfilePage';
+import AppointmentsPage from './pages/terapeutas/AppointmentsPage';
+import AllMedicalRecordsPage from './pages/terapeutas/AllMedicalRecordsPage';
+import SchedulePage from './pages/terapeutas/SchedulePage';
 
 function App() {
 

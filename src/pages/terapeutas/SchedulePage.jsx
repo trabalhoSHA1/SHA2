@@ -1,10 +1,9 @@
 // src/pages/SchedulePage.jsx
 import React, { useState } from 'react';
-import Layout from '../components/layout/Layout';
-import ScheduleTabs from '../components/schedule/ScheduleTabs';
-import DailySchedule from '../components/schedule/DailySchedule';
-import WeeklySchedule from '../components/schedule/WeeklySchedule';
-import MonthlySchedule from '../components/schedule/MonthlySchedule';
+import ScheduleTabs from '../../components/schedule/ScheduleTabs';
+import DailySchedule from '../../components/schedule/DailySchedule';
+import WeeklySchedule from '../../components/schedule/WeeklySchedule';
+import MonthlySchedule from '../../components/schedule/MonthlySchedule';
 
 export default function SchedulePage() {
   console.log('рендерizando Página da Agenda');

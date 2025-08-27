@@ -9,13 +9,19 @@ import {
 export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false); 
   const location = useLocation();
-  const { user } = useContext(AuthContext); // Pega usuário logado
+  const { user } = useContext(AuthContext);
 
-  if (!user) return null; // Se não houver usuário, não mostra sidebar
+  if (!user) return null;
 
-  const role = user.role; // role = 'admin', 'therapist' ou 'assistant'
+  const role = user.role;
 
-  // Define os itens de navegação dependendo do role
+  // Map para traduzir os roles para português
+  const roleNames = {
+    admin: 'Administrador',
+    therapist: 'Terapeuta',
+    assistant: 'Assistente Administrativo'
+  };
+
   const navItems = role === 'admin'
     ? [
         { label: 'Dashboard', icon: <Home size={20} />, to: '/dashboard/admin' },
@@ -39,13 +45,12 @@ export default function Sidebar() {
           { label: 'Relatórios', icon: <FileText size={20} />, to: '/reports' },
         ]
       : [
-        // therapist
-        { label: 'Dashboard', icon: <Home size={20} />, to: '/dashboard/therapist' },
-        { label: 'Consultas', icon: <Calendar size={20} />, to: '/appointments' },
-        { label: 'Pacientes', icon: <Users size={20} />, to: '/patients' },
-        { label: 'Prontuários', icon: <FileText size={20} />, to: '/prontuarios' },
-        { label: 'Configurações', icon: <Settings size={20} />, to: '/settings' },
-      ];
+          { label: 'Dashboard', icon: <Home size={20} />, to: '/dashboard/therapist' },
+          { label: 'Consultas', icon: <Calendar size={20} />, to: '/appointments' },
+          { label: 'Pacientes', icon: <Users size={20} />, to: '/patients' },
+          { label: 'Prontuários', icon: <FileText size={20} />, to: '/prontuarios' },
+          { label: 'Configurações', icon: <Settings size={20} />, to: '/settings' },
+        ];
 
   return (
     <aside className={`h-screen bg-green-100 border-r border-green-200 shadow-md transition-all duration-300 flex flex-col ${isExpanded ? 'w-56' : 'w-20'}`}>
@@ -84,7 +89,7 @@ export default function Sidebar() {
         <div className="p-4 mt-auto flex flex-col items-center border-t border-green-200">
           <User size={30} className="text-green-900 mb-2" />
           <span className="font-medium text-green-900">{user.name}</span>
-          <span className="text-sm text-green-800">{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span>
+          <span className="text-sm text-green-800">{roleNames[user.role]}</span>
         </div>
       )}
     </aside>

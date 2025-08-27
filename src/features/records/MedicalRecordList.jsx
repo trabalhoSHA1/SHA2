@@ -1,4 +1,4 @@
-// src/components/medical-records/MedicalRecordList.jsx
+// src/features/records/MedicalRecordList.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, FileText, Eye, Calendar, User } from 'lucide-react';

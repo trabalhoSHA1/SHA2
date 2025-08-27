@@ -1,6 +1,6 @@
 // src/pages/EditPatientPage.jsx
 import React, { useState } from 'react';
-import Layout from '../components/layout/Layout';
+import Layout from '../../components/layout/Layout';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
 
