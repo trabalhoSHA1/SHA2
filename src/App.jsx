@@ -1,7 +1,7 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './features/login/Login';
+import Login from './features/login/login';
 import Layout from './components/layout/Layout';
 import Register from './features/register/Register';
 import TherapistDashboard from './components/dashboards/TherapistDashboard';
@@ -16,6 +16,7 @@ import ProfilePage from './pages/shared/ProfilePage';
 import AppointmentsPage from './pages/terapeutas/AppointmentsPage';
 import AllMedicalRecordsPage from './pages/terapeutas/AllMedicalRecordsPage';
 import SchedulePage from './pages/terapeutas/SchedulePage';
+import RoomsPage from './pages/administradores/RoomPage';
 
 function App() {
 
@@ -109,6 +110,14 @@ function App() {
               <AppointmentsPage />
             </Layout>
           } />
+
+          {/* Rota para salas */}
+          <Route path="/rooms" element={
+            <Layout>
+              <RoomsPage />
+            </Layout>
+          } />
+          
 
            {/* Rota para perfil */}
           <Route path="/profile" element={

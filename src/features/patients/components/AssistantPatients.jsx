@@ -1,11 +1,13 @@
-import React from 'react';
-import PatientList from './PatientList'; // Aqui também você pode criar um filtro específico para assistentes
+import React from "react";
+import { patientsMock } from "../../../data/patientsMock";
+import PatientList from "./PatientList";
 
 export default function AssistantPatients() {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Pacientes</h1>
-      <PatientList />
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-4">Gerenciamento de Pacientes</h1>
+      <PatientList patients={patientsMock} />
     </div>
   );
 }
+  
