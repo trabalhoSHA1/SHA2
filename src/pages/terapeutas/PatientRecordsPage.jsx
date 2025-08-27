@@ -78,7 +78,7 @@ export default function PatientRecordsPage() {
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">Prontuários</h2>
-            <Button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors">
+            <Button className="bg-green-500 hover:bg-green-600 text-white px-1 py-1 rounded-lg text-sm font-medium transition-colors">
               + Novo
             </Button>
           </div>
@@ -173,11 +173,11 @@ function RecordDetailView({ record, loggedTherapist }) {
             <p className="text-sm text-gray-500">{record.date} às {record.time}</p>
           </div>
           <div className="flex items-center space-x-2">
-            <Button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            <Button className="bg-green-500 hover:bg-green-600 text-white px-1 py-1 rounded-lg text-sm font-medium transition-colors">
               + Nova Anotação
             </Button>
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-              <FileText className="w-4 h-4 mr-2" />
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-1 py-1 rounded-lg text-sm font-medium transition-colors">
+              <FileText className="w-4 h-4 mr-1" />
               Exportar PDF
             </Button>
           </div>

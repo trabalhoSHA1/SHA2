@@ -208,22 +208,6 @@ export default function TherapistDashboard() {
           </div>
         </>
       )}
-
-      {/* Conteúdo da aba Minha Agenda */}
-      {activeTab === 'schedule' && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <CalendarCheck className="w-6 h-6 text-blue-600" />
-            <h2 className="text-xl font-semibold text-gray-800">
-              Minha Agenda
-            </h2>
-          </div>
-          <p className="text-gray-600">
-            Aqui você poderá gerenciar seus horários disponíveis e visualizar sua agenda completa.
-          </p>
-          {/* Aqui você pode integrar o componente TherapistSchedule */}
-        </div>
-      )}
     </div>
   );
 }

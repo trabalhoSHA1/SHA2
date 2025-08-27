@@ -3,13 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8aca77de771e6f1adf5fd0d576c73ff1bbfcd954
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f9fafb;
 }
+
