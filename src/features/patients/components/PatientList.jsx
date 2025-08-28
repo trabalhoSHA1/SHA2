@@ -10,61 +10,83 @@ export default function PatientList({
   showRecordsButton = true,
   showDeleteButton = false,
 }) {
-  console.log('рендерizando PatientList genérico');
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {patients.map((patient, index) => (
-        <div key={index} className="bg-white rounded-lg shadow-md p-4">
+        <div
+          key={index}
+          className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition"
+        >
+          {/* Header do Card */}
           <div className="flex items-center justify-between">
+            {/* Avatar + Nome */}
             <div className="flex items-center space-x-2">
-              <div className="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center">
+              <div className="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
                 {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
               </div>
               <div>
                 <h2 className="text-lg font-medium">{patient.name}</h2>
                 <p className="text-sm text-gray-500">CPF: {patient.siape}</p>
                 {showTherapistColumn && (
-                  <p className="text-sm text-gray-500">Terapeuta: {patient.therapistName}</p>
+                  <p className="text-sm text-gray-500">
+                    Terapeuta: {patient.therapistName}
+                  </p>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Link to={`/patients/${patient.siape}`}>
-                <Eye className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
+            {/* Ações */}
+            <div className="flex items-center space-x-3">
+              {/* Visualizar */}
+              <Link to={`/patients/${patient.siape}`} title="Visualizar">
+                <Eye className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
               </Link>
 
+              {/* Prontuário */}
               {showRecordsButton && (
-                <Link to={`/patients/${patient.siape}/records`}>
-                  <FileText className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer" />
+                <Link
+                  to={`/patients/${patient.siape}/records`}
+                  title="Prontuário"
+                >
+                  <FileText className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
                 </Link>
               )}
 
+              {/* Editar */}
               {canEdit && (
-                <Link to={`/patients/edit/${patient.siape}`}>
-                  <Edit className="w-5 h-5 text-blue-500 hover:text-blue-700 cursor-pointer" />
+                <Link
+                  to={`/patients/edit/${patient.siape}`}
+                  title="Editar"
+                >
+                  <Edit className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
                 </Link>
               )}
 
+              {/* Excluir */}
               {showDeleteButton && (
                 <button
-                  onClick={() => alert(`Excluir paciente: ${patient.name}`)}
+                  onClick={() =>
+                    confirm(`Tem certeza que deseja excluir ${patient.name}?`)
+                  }
+                  title="Excluir"
+                  className="bg-transparent border-none p-0 hover:bg-transparent focus:outline-none"
                 >
-                  <Trash className="w-5 h-5 text-red-500 hover:text-red-700 cursor-pointer" />
+                  <Trash className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
                 </button>
               )}
             </div>
           </div>
 
-          <div className="mt-2">
-            <p className="text-sm font-medium">Contato:</p>
-            <p className="text-sm">{patient.contact}</p>
-            <p className="text-sm">{patient.email}</p>
+          {/* Contato */}
+          <div className="mt-3 text-sm">
+            <p className="font-medium">Contato:</p>
+            <p>{patient.contact}</p>
+            <p>{patient.email}</p>
           </div>
 
-          {patient.specializations && patient.specializations.length > 0 && (
-            <div className="mt-2">
+          {/* Especialidades */}
+          {patient.specializations?.length > 0 && (
+            <div className="mt-3">
               <p className="text-sm font-medium">Especialidades:</p>
               <div className="flex flex-wrap gap-2 mt-1">
                 {patient.specializations.map((spec, idx) => (
@@ -79,11 +101,13 @@ export default function PatientList({
             </div>
           )}
 
+          {/* Tempo de atendimento */}
           {patient.firstVisitDuration && patient.normalVisitDuration && (
-            <div className="mt-2">
-              <p className="text-sm font-medium">Tempo por atendimento:</p>
-              <p className="text-sm">
-                Primeira vez: {patient.firstVisitDuration} | Normal: {patient.normalVisitDuration}
+            <div className="mt-3 text-sm">
+              <p className="font-medium">Tempo por atendimento:</p>
+              <p>
+                Primeira vez: {patient.firstVisitDuration} | Normal:{' '}
+                {patient.normalVisitDuration}
               </p>
             </div>
           )}

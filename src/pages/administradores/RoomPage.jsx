@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Building, Plus, Search, Edit, Eye, MapPin } from 'lucide-react';
 import NewRoomForm from "../../components/forms/NewRoomForm";
 import ViewRoomModal from '../../components/modals/ViewRoomModal';
-import { EditRoomModal } from "../../components/modals/EditRoomModal";
+import EditRoomModal from '../../components/modals/EditRoomModal';
 
 const RoomsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
