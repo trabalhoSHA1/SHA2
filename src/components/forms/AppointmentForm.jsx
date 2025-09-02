@@ -7,7 +7,7 @@ export default function AppointmentForm() {
 
   return (
     <form>
-      <h2>📅 Agendar Consulta</h2>
+      <h2> Agendar Consulta</h2>
 
       <label>Tipo:</label>
       <select value={mode} onChange={(e) => setMode(e.target.value)}>
