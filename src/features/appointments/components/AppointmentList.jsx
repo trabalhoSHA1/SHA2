@@ -1,9 +1,17 @@
-// src/shared/components/appointments/AppointmentList.jsx
 import React from 'react';
 import AppointmentCard from './AppointmentCard';
 import { Calendar } from 'lucide-react';
 
-export default function AppointmentList({ appointments, showTherapist = false, isAdmin = false }) {
+export default function AppointmentList({
+  appointments,
+  showTherapist = false,
+  isAdmin = false,
+  isTherapist = false,
+  onView,
+  onEdit,
+  onChangeStatus,
+  onDelete,
+}) {
   if (!appointments || appointments.length === 0) {
     return (
       <div className="p-8 text-center text-gray-500">
@@ -21,7 +29,12 @@ export default function AppointmentList({ appointments, showTherapist = false, i
           key={apt.id}
           appointment={apt}
           showTherapist={showTherapist}
-          isAdmin={isAdmin} 
+          isAdmin={isAdmin}
+          isTherapist={isTherapist}
+          onView={onView}
+          onEdit={onEdit}
+          onChangeStatus={onChangeStatus}
+          onDelete={onDelete} // se você quiser passar delete pro card
         />
       ))}
     </div>

@@ -1,42 +1,35 @@
 // src/shared/components/appointments/AppointmentCard.jsx
 import React from 'react';
-import { Clock, User, MapPin, Video, Phone, Mail, Eye, Edit, Check } from 'lucide-react';
+import { Clock, User, MapPin, Video, Phone, Mail, Eye, Edit, Trash, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export default function AppointmentCard({ appointment, showTherapist, isAdmin, isTherapist = false }) {
+export default function AppointmentCard({
+  appointment,
+  showTherapist,
+  isAdmin,
+  isTherapist = false,
+  onView,
+  onEdit,
+  onDelete,
+  onChangeStatus,
+}) {
   const getStatusColor = (status) => {
     switch (status) {
-      case 'confirmado': return 'bg-green-100 text-green-800 border-green-300';
-      case 'pendente': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case 'cancelado': return 'bg-red-100 text-red-800 border-red-300';
-      default: return 'bg-gray-100 text-gray-800 border-gray-300';
+      case 'confirmado':
+        return 'bg-green-100 text-green-800 border-green-300';
+      case 'pendente':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      case 'cancelado':
+        return 'bg-red-100 text-red-800 border-red-300';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-300';
     }
   };
 
   const isOnline = appointment.type === 'online';
 
-  const handleView = () => {
-    alert(`Visualizar detalhes da consulta de ${appointment.patient}`);
-  };
-
-  const handleEdit = () => {
-    alert(`Editar consulta de ${appointment.patient}`);
-  };
-
-  const handleChangeStatus = () => {
-    const newStatus = prompt(
-      `Mudar status da consulta de ${appointment.patient}`,
-      appointment.status
-    );
-    if (newStatus) {
-      alert(`Status alterado para: ${newStatus}`);
-      // Futuramente atualizar no banco
-    }
-  };
-
   return (
     <div className="p-4 sm:p-6 hover:bg-gray-50 transition-colors border-b border-gray-200 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-      
       {/* Informações principais */}
       <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
         {/* Horário */}
@@ -54,7 +47,9 @@ export default function AppointmentCard({ appointment, showTherapist, isAdmin, i
             <User className="w-4 h-4 text-gray-400" />
             <span className="font-medium text-gray-900">{appointment.patient}</span>
             {showTherapist && (
-              <span className="ml-4 text-sm text-gray-600">Terapeuta: {appointment.therapist}</span>
+              <span className="ml-4 text-sm text-gray-600">
+                Terapeuta: {appointment.therapist}
+              </span>
             )}
           </div>
 
@@ -82,9 +77,13 @@ export default function AppointmentCard({ appointment, showTherapist, isAdmin, i
         </div>
       </div>
 
-      {/* Status e ações administrativas */}
+      {/* Status e ações */}
       <div className="flex items-center gap-3 mt-2 sm:mt-0">
-        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(appointment.status)}`}>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(
+            appointment.status
+          )}`}
+        >
           {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
         </span>
 
@@ -95,23 +94,51 @@ export default function AppointmentCard({ appointment, showTherapist, isAdmin, i
           </Button>
         )}
 
+        {/* Botões Admin */}
         {isAdmin && (
           <div className="flex items-center gap-2">
-            <button onClick={handleView} title="Visualizar" className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100">
+            <button
+              onClick={() => onView?.(appointment)}
+              title="Visualizar"
+              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+            >
               <Eye className="w-5 h-5" />
             </button>
-            <button onClick={handleEdit} title="Editar" className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100">
-              <Edit className="w-5 h-5 text-black-600" />
+
+            <button
+              onClick={() => onEdit?.(appointment)}
+              title="Editar"
+              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+            >
+              <Edit className="w-5 h-5" />
             </button>
-            <button onClick={handleChangeStatus} title="Mudar Status" className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100">
-              <Check className="w-5 h-5 text-black-600" />
+
+            <button
+              onClick={() => onDelete?.(appointment.id)}
+              title="Excluir"
+              className="p-2 text-gray-500 hover:text-red-600 rounded-full hover:bg-gray-100"
+            >
+              <Trash className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={() => onChangeStatus?.(appointment)}
+              title="Mudar Status"
+              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+            >
+              <Check className="w-5 h-5" />
             </button>
           </div>
         )}
 
-         {isTherapist && (
+        {/* Botões Terapeuta */}
+        {isTherapist && !isAdmin && (
           <div className="flex items-center gap-2">
-            <button onClick={handleView} title="Visualizar" className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100">
+            <button
+              onClick={() => onView?.(appointment)}
+              title="Visualizar"
+              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+            >
               <Eye className="w-5 h-5" />
             </button>
           </div>

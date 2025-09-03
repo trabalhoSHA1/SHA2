@@ -68,7 +68,7 @@ export default function TherapistAppointmentPage() {
       </div>
 
       {/* Lista */}
-      <AppointmentList appointments={filteredAppointments} />
+      <AppointmentList appointments={filteredAppointments} isTherapist={true} />
     </div>
   );
 }
