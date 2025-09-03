@@ -4,14 +4,17 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Bell } from 'lucide-react';
 
-function capitalize(str) {
-  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
-}
+// Mapeia os papéis do usuário para português
+const roleLabels = {
+  therapist: 'Terapeuta',
+  assistant: 'Assistente',
+  admin: 'Administrador',
+};
 
 export default function Header() {
   const { user } = useAuth();
 
-  const formattedRole = capitalize(user?.role);
+  const formattedRole = roleLabels[user?.role] || 'Usuário';
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">

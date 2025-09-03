@@ -1,7 +1,7 @@
 export const appointmentsMock = [
   {
     id: 1,
-    date: '2025-09-02', // <-- adicionei a data
+    date: new Date().toISOString().split('T')[0],
     time: '09:00',
     duration: 60,
     patient: 'Maria Silva Santos',
@@ -14,7 +14,7 @@ export const appointmentsMock = [
   },
   {
     id: 2,
-    date: '2025-09-02',
+    date: new Date().toISOString().split('T')[0],
     time: '10:30',
     duration: 60,
     patient: 'João Santos Lima',
@@ -24,5 +24,4 @@ export const appointmentsMock = [
     contact: '(11) 88888-8888',
     email: 'joao.santos@email.com'
   },
-  // demais...
 ];

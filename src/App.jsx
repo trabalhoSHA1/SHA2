@@ -1,6 +1,7 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAuth } from './hooks/useAuth';
 
 import Login from './features/login/login';
 import Register from './features/register/Register';
@@ -22,25 +23,21 @@ import ProfilePage from './pages/shared/ProfilePage';
 
 import AdminAppointmentsPage from './pages/administradores/AdminAppointmentPage';
 import TherapistAppointmentPage from './pages/terapeutas/TherapistAppointmentPage';
-import AssistantAppointmentsPage from './pages/administradores/AdminAppointmentPage';
+import AssistantAppointmentsPage from './pages/assistentes/AssistantAppointmentPage';
 
-function App() {
-  // Simulação do usuário logado
-  const user = {
-    role: 'admin' // 'admin', 'assistant', 'therapist'
-  };
+export default function App() {
+  const { user } = useAuth(); 
 
-  // Função que retorna a página de compromissos correta de acordo com o role
   const renderAppointmentsPage = () => {
-    switch (user.role) {
+    switch (user?.role) {
       case 'admin':
         return <AdminAppointmentsPage />;
       case 'assistant':
         return <AssistantAppointmentsPage />;
-      case 'therapist':
-        return <TherapistAppointmentsPage />;
+      case 'terapeuta':
+        return <TherapistAppointmentPage />;
       default:
-        return <TherapistAppointmentsPage />;
+        return <TherapistAppointmentPage />;
     }
   };
 
@@ -55,7 +52,7 @@ function App() {
           {/* Dashboards */}
           <Route
             path="/dashboard/therapist"
-            element={<Layout role="therapist"><TherapistDashboard /></Layout>}
+            element={<Layout role="terapeuta"><TherapistDashboard /></Layout>}
           />
           <Route
             path="/dashboard/admin"
@@ -63,7 +60,7 @@ function App() {
           />
           <Route
             path="/dashboard/assistant"
-            element={<Layout role="assistant"><AssistantDashboard /></Layout>}
+            element={<Layout role="assistente"><AssistantDashboard /></Layout>}
           />
 
           {/* Rotas de pacientes */}
@@ -89,5 +86,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
