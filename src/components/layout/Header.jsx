@@ -35,7 +35,7 @@ export default function Header() {
         <div className="flex flex-col">
           <span className="text-lg font-bold text-gray-900 leading-none">SHA</span>
           <span className="text-sm text-gray-700 -mt-0.5">
-            Sistema de Humanização e Acolhimento
+            Setor de Humanização e Acolhimento
           </span>
         </div>
       </div>

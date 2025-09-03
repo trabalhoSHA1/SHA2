@@ -1,6 +1,6 @@
 // src/components/dashboards/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
-import { Users, Calendar, UserCheck, FileText, Bell, Search } from "lucide-react";
+import { Users, Calendar, UserCheck, FileText, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function AdminDashboard() {
@@ -77,71 +77,48 @@ export default function AdminDashboard() {
     <div className="space-y-8 px-6 py-6">
       {/* Indicadores principais */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        <Indicador
-          icon={<Users className="w-6 h-6" />}
-          valor={adminData?.indicadores?.totalPacientes || 0}
-          label="Pacientes Totais"
-          cor="blue"
-        />
-        <Indicador
-          icon={<Calendar className="w-6 h-6" />}
-          valor={adminData?.indicadores?.consultasHoje || 0}
-          label="Consultas Hoje"
-          cor="green"
-        />
-        <Indicador
-          icon={<UserCheck className="w-6 h-6" />}
-          valor={adminData?.indicadores?.terapeutasAtivos || 0}
-          label="Terapeutas Ativos"
-          cor="purple"
-        />
-        <Indicador
-          icon={<FileText className="w-6 h-6" />}
-          valor={adminData?.indicadores?.relatoriosPendentes || 0}
-          label="Relatórios Pendentes"
-          cor="orange"
-        />
+        <Indicador icon={<Users className="w-6 h-6" />} valor={adminData.indicadores.totalPacientes} label="Pacientes Totais" cor="blue" />
+        <Indicador icon={<Calendar className="w-6 h-6" />} valor={adminData.indicadores.consultasHoje} label="Consultas Hoje" cor="green" />
+        <Indicador icon={<UserCheck className="w-6 h-6" />} valor={adminData.indicadores.terapeutasAtivos} label="Terapeutas Ativos" cor="purple" />
+        <Indicador icon={<FileText className="w-6 h-6" />} valor={adminData.indicadores.relatoriosPendentes} label="Relatórios Pendentes" cor="orange" />
       </div>
 
-      {/* Busca Global + Alertas */}
+      {/* Busca + Alertas */}
       <div className="flex flex-col lg:flex-row justify-between gap-4">
         <div className="flex items-center gap-3 flex-1">
           <Search className="w-5 h-5 text-gray-400" />
           <input
             type="text"
             placeholder="Buscar pacientes, terapeutas ou agendamentos..."
-            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
           />
         </div>
-        <div className="flex gap-2">
-          {adminData?.alertas?.map((alerta, i) => (
+        <div className="flex gap-2 flex-wrap">
+          {adminData.alertas.map((alerta, i) => (
             <span
               key={i}
-              className={`px-3 py-1 rounded-full text-white text-sm ${
-                alerta.tipo === "sucesso"
-                  ? "bg-green-500"
-                  : alerta.tipo === "aviso"
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
-              }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium
+                ${alerta.tipo === "sucesso" ? "bg-green-100 text-green-700" :
+                  alerta.tipo === "aviso" ? "bg-yellow-100 text-yellow-700" :
+                  "bg-red-100 text-red-700"}`}
             >
               {alerta.mensagem}
             </span>
-          )) || null}
+          ))}
         </div>
       </div>
 
       {/* Agenda + Atividades */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <AgendaCard agenda={adminData?.agenda || []} />
-        <AtividadesCard atividades={adminData?.atividades || []} />
+        <AgendaCard agenda={adminData.agenda} />
+        <AtividadesCard atividades={adminData.atividades} />
       </div>
 
       {/* Resumo da Semana */}
-      <ResumoSemanalCard resumo={adminData?.resumo || { usoModalidades: [] }} />
+      <ResumoSemanalCard resumo={adminData.resumo} />
 
       {/* Gestão Rápida */}
-      <GestaoCard gestao={adminData?.gestao || { pacientes: 0, terapeutas: 0, salas: 0, modalidades: 0 }} />
+      <GestaoCard gestao={adminData.gestao} />
     </div>
   );
 }
@@ -149,9 +126,9 @@ export default function AdminDashboard() {
 // --- COMPONENTES AUXILIARES ---
 function Indicador({ icon, valor, label, cor }) {
   return (
-    <Card className="bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="flex items-center gap-4 p-5">
-        <div className={`p-3 rounded-lg bg-${cor}-100 text-${cor}-600`}>{icon}</div>
+        <div className={`p-3 rounded-full bg-${cor}-100 text-${cor}-600`}>{icon}</div>
         <div>
           <p className="text-sm text-gray-500">{label}</p>
           <p className="text-2xl font-bold text-gray-800">{valor}</p>
@@ -164,14 +141,14 @@ function Indicador({ icon, valor, label, cor }) {
 function AtividadesCard({ atividades }) {
   const coresStatus = { sucesso: "bg-green-500", info: "bg-blue-500", aviso: "bg-yellow-500", erro: "bg-red-500" };
   return (
-    <Card className="bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Atividades Recentes</h2>
         <div className="space-y-3">
           {atividades.map((item, i) => (
-            <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
+            <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
               <div className="flex items-center gap-3">
-                <span className={`w-3 h-3 rounded-full ${coresStatus[item.status]}`}></span>
+                <span className={`w-2.5 h-2.5 rounded-full ${coresStatus[item.status]}`}></span>
                 <div>
                   <p className="font-medium text-gray-800">{item.nome}</p>
                   <p className="text-sm text-gray-500">{item.acao}</p>
@@ -187,19 +164,23 @@ function AtividadesCard({ atividades }) {
 }
 
 function AgendaCard({ agenda }) {
-  const coresStatus = { confirmado: "bg-green-500", pendente: "bg-yellow-500", faltou: "bg-red-500" };
+  const coresStatus = {
+    confirmado: "bg-green-100 text-green-700",
+    pendente: "bg-yellow-100 text-yellow-700",
+    faltou: "bg-red-100 text-red-700",
+  };
   return (
-    <Card className="bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Agenda do Dia</h2>
         <div className="space-y-3">
           {agenda.map((item, i) => (
-            <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-md hover:bg-gray-100 transition">
+            <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
               <div>
                 <p className="font-medium text-gray-800">{item.paciente}</p>
                 <p className="text-sm text-gray-500">{item.terapeuta} • {item.tipo} • {item.hora}</p>
               </div>
-              <span className={`px-2 py-1 rounded-full text-white text-sm ${coresStatus[item.status]}`}>{item.status}</span>
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${coresStatus[item.status]}`}>{item.status}</span>
             </div>
           ))}
         </div>
@@ -210,16 +191,16 @@ function AgendaCard({ agenda }) {
 
 function ResumoSemanalCard({ resumo }) {
   return (
-    <Card className="bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Resumo da Semana</h2>
         <div className="space-y-4">
-          <BarItem label="Consultas Realizadas" valor={resumo?.consultasRealizadas || 0} cor="green" />
-          <BarItem label="Novos Pacientes" valor={resumo?.novosPacientes || 0} cor="blue" />
-          <BarItem label="Consultas Online" valor={resumo?.consultasOnline || 0} cor="purple" />
-          <BarItem label="Taxa de Presença" valor={resumo?.taxaPresenca || "0%"} cor="orange" isPercent />
-          {resumo?.usoModalidades?.map((mod, i) => (
-            <BarItem key={i} label={`Modalidade: ${mod.nome}`} valor={`${mod.valor || 0}%`} cor="teal" isPercent />
+          <BarItem label="Consultas Realizadas" valor={resumo.consultasRealizadas} cor="green" />
+          <BarItem label="Novos Pacientes" valor={resumo.novosPacientes} cor="blue" />
+          <BarItem label="Consultas Online" valor={resumo.consultasOnline} cor="purple" />
+          <BarItem label="Taxa de Presença" valor={resumo.taxaPresenca} cor="orange" isPercent />
+          {resumo.usoModalidades.map((mod, i) => (
+            <BarItem key={i} label={`Modalidade: ${mod.nome}`} valor={`${mod.valor}%`} cor="teal" isPercent />
           ))}
         </div>
       </CardContent>
@@ -244,14 +225,14 @@ function BarItem({ label, valor, cor, isPercent = false }) {
 
 function GestaoCard({ gestao }) {
   return (
-    <Card className="bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Gestão Rápida</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <CardGestao label="Pacientes" valor={gestao?.pacientes || 0} cor="blue" />
-          <CardGestao label="Terapeutas" valor={gestao?.terapeutas || 0} cor="purple" />
-          <CardGestao label="Salas" valor={gestao?.salas || 0} cor="green" />
-          <CardGestao label="Modalidades" valor={gestao?.modalidades || 0} cor="orange" />
+          <CardGestao label="Pacientes" valor={gestao.pacientes} cor="blue" />
+          <CardGestao label="Terapeutas" valor={gestao.terapeutas} cor="purple" />
+          <CardGestao label="Salas" valor={gestao.salas} cor="green" />
+          <CardGestao label="Modalidades" valor={gestao.modalidades} cor="orange" />
         </div>
       </CardContent>
     </Card>
@@ -260,9 +241,9 @@ function GestaoCard({ gestao }) {
 
 function CardGestao({ label, valor, cor }) {
   return (
-    <div className={`bg-${cor}-100 rounded-lg p-4 flex flex-col items-center justify-center shadow-md hover:shadow-lg transition`}>
+    <div className={`bg-${cor}-100 rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md transition`}>
       <p className="text-gray-700 font-medium">{label}</p>
-      <p className={`text-2xl font-bold text-${cor}-600`}>{valor}</p>
+      <p className={`text-xl font-bold text-${cor}-600`}>{valor}</p>
     </div>
   );
 }

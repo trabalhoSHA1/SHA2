@@ -59,10 +59,12 @@ export default function Sidebar() {
 
   return (
     <aside className={`h-screen bg-green-100 border-r border-green-200 shadow-md transition-all duration-300 flex flex-col ${isExpanded ? 'w-56' : 'w-20'}`}>
-      <div className="flex items-center justify-end p-2">
+      
+      {/* Toggle alinhado à esquerda, mesma altura dos ícones */}
+      <div className="flex items-center justify-start p-2 h-12">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="bg-green-200 hover:bg-green-300 text-green-900 rounded-full p-1 transition"
+          className="bg-green-200 hover:bg-green-300 text-green-900 rounded-full p-1 flex items-center justify-center transition ml-2"
         >
           {isExpanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
         </button>
