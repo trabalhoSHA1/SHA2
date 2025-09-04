@@ -1,32 +1,29 @@
 // src/pages/administradores/AdminAppointmentsPage.jsx
 import React, { useState, useEffect } from 'react';
-import { Calendar, Filter, Search, Plus, X } from 'lucide-react';
+import { Calendar, Filter, Search, Plus } from 'lucide-react';
 import AppointmentList from '../../features/appointments/components/AppointmentList';
 import { appointmentsMock } from '../../data/appointmentsMock';
 import { Button } from '../../components/ui/button';
 import ViewAppointmentModal from '../../components/modals/ViewAppointmentModal';
 import EditAppointmentModal from '../../components/modals/EditAppointmentModal';
+import NewAppointmentModal from '../../components/modals/NewAppointmentModal';
 
 export default function AdminAppointmentsPage() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [filterType, setFilterType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [appointments, setAppointments] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [newAppointment, setNewAppointment] = useState({
-    patient: '',
-    date: '',
-    time: '',
-    therapist: '',
-    type: 'presencial',
-  });
+
+  // modais
+  const [showNewModal, setShowNewModal] = useState(false);
   const [viewAppointment, setViewAppointment] = useState(null);
-  const [editAppointment, setEditAppointment] = useState(null); 
+  const [editAppointment, setEditAppointment] = useState(null);
 
   useEffect(() => {
     setAppointments(appointmentsMock);
   }, []);
 
+  // --- filtros ---
   const filteredAppointments = appointments.filter((apt) => {
     const matchesDate = !apt.date || apt.date === selectedDate;
     const matchesType = filterType === 'all' || apt.type === filterType;
@@ -36,23 +33,9 @@ export default function AdminAppointmentsPage() {
     return matchesDate && matchesType && matchesSearch;
   });
 
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleChange = (e) => {
-    setNewAppointment({ ...newAppointment, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newApt = {
-      ...newAppointment,
-      id: Date.now(),
-      status: 'pendente',
-    };
-    setAppointments([...appointments, newApt]);
-    setNewAppointment({ patient: '', date: '', time: '', therapist: '', type: 'presencial' });
-    handleCloseModal();
+  // --- CRUD ---
+  const handleSaveNewAppointment = (appointment) => {
+    setAppointments((prev) => [...prev, appointment]);
   };
 
   const handleDelete = (id) => {
@@ -80,10 +63,7 @@ export default function AdminAppointmentsPage() {
   const handleViewDetails = (appointment) => setViewAppointment(appointment);
   const handleCloseView = () => setViewAppointment(null);
 
-  const handleEdit = (appointment) => {
-    setEditAppointment(appointment);
-  };
-
+  const handleEdit = (appointment) => setEditAppointment(appointment);
   const handleSaveEditedAppointment = (updatedAppointment) => {
     setAppointments(
       appointments.map((apt) =>
@@ -104,7 +84,7 @@ export default function AdminAppointmentsPage() {
           <p className="text-gray-600">Visualize e gerencie todos os compromissos</p>
         </div>
         <Button
-          onClick={handleOpenModal}
+          onClick={() => setShowNewModal(true)}
           className="mt-4 sm:mt-0 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
         >
           <Plus className="w-4 h-4" />
@@ -151,77 +131,21 @@ export default function AdminAppointmentsPage() {
       <AppointmentList
         appointments={filteredAppointments}
         showTherapist
-        isAdmin = {false}
-        isTherapist = {true}
+        isAdmin={true}
         onView={handleViewDetails}
-        onEdit={handleEdit} 
+        onEdit={handleEdit}
         onChangeStatus={handleStatusChange}
         onDelete={handleDelete}
       />
 
       {/* Modal nova consulta */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <h2 className="text-xl font-bold mb-4">Nova Consulta</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                type="text"
-                name="patient"
-                placeholder="Paciente"
-                value={newAppointment.patient}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-              <input
-                type="text"
-                name="therapist"
-                placeholder="Terapeuta"
-                value={newAppointment.therapist}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-              <input
-                type="date"
-                name="date"
-                value={newAppointment.date}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-              <input
-                type="time"
-                name="time"
-                value={newAppointment.time}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
-              />
-              <select
-                name="type"
-                value={newAppointment.type}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg"
-              >
-                <option value="presencial">Presencial</option>
-                <option value="online">Online</option>
-              </select>
-              <button
-                type="submit"
-                className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-              >
-                Agendar Consulta
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      <NewAppointmentModal
+        showModal={showNewModal}
+        onClose={() => setShowNewModal(false)}
+        onSave={handleSaveNewAppointment}
+      />
 
-      {/* Modal detalhes da consulta */}
+      {/* Modal detalhes */}
       {viewAppointment && (
         <ViewAppointmentModal
           appointment={viewAppointment}
@@ -229,7 +153,7 @@ export default function AdminAppointmentsPage() {
         />
       )}
 
-      {/* Modal edição da consulta */}
+      {/* Modal edição */}
       {editAppointment && (
         <EditAppointmentModal
           appointment={editAppointment}

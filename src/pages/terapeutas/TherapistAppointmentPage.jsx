@@ -1,17 +1,19 @@
-// src/pages/terapeutas/TherapistAppointmentPage.jsx
-import React, { useState, useEffect } from 'react';
-import { Calendar, Search, Filter } from 'lucide-react';
-import AppointmentList from '../../features/appointments/components/AppointmentList';
-import { appointmentsMock } from '../../data/appointmentsMock';
+import React, { useState, useEffect } from "react";
+import { Calendar, Search, Filter } from "lucide-react";
+import AppointmentList from "../../features/appointments/components/AppointmentList";
+import ViewAppointmentModal from "../../components/modals/ViewAppointmentModal";
+import { appointmentsMock } from "../../data/appointmentsMock";
 
 export default function TherapistAppointmentPage() {
-  // simula terapeuta logado
-  const loggedTherapist = 'Dr. João';
+  const loggedTherapist = "Dr. João";
 
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  const [filterType, setFilterType] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [filterType, setFilterType] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const [appointments, setAppointments] = useState([]);
+  const [viewAppointment, setViewAppointment] = useState(null);
 
   useEffect(() => {
     setAppointments(appointmentsMock);
@@ -19,12 +21,17 @@ export default function TherapistAppointmentPage() {
 
   const filteredAppointments = appointments.filter((apt) => {
     const matchesTherapist = apt.therapist === loggedTherapist;
-    const matchesDate = !apt.date || apt.date === selectedDate; // aceita se não tiver data no mock
-    const matchesType = filterType === 'all' || apt.type === filterType;
-    const matchesSearch = apt.patient.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDate = !apt.date || apt.date === selectedDate;
+    const matchesType = filterType === "all" || apt.type === filterType;
+    const matchesSearch = apt.patient
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
     return matchesTherapist && matchesDate && matchesType && matchesSearch;
   });
+
+  const handleViewDetails = (appointment) => setViewAppointment(appointment);
+  const handleCloseView = () => setViewAppointment(null);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -68,7 +75,21 @@ export default function TherapistAppointmentPage() {
       </div>
 
       {/* Lista */}
-      <AppointmentList appointments={filteredAppointments} isTherapist={true} />
+      <AppointmentList
+        appointments={filteredAppointments}
+        isTherapist={true}
+        onView={handleViewDetails}
+        showTherapist={true} // mostra terapeuta no card se quiser
+      />
+
+      {/* Modal detalhes */}
+      {viewAppointment && (
+        <ViewAppointmentModal
+          showModal={!!viewAppointment}
+          appointment={viewAppointment}
+          onClose={handleCloseView}
+        />
+      )}
     </div>
   );
 }

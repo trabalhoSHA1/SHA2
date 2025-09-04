@@ -4,7 +4,7 @@ import { X, FileText, Calendar, User, Heart, Stethoscope } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-export default function NewRecordModal({ onClose, patientSiape }) {
+export default function NewRecordModal({ onClose }) {
   const [formData, setFormData] = useState({
     title: '',
     date: '',
