@@ -34,7 +34,7 @@ export default function TherapistAppointmentPage() {
   const handleCloseView = () => setViewAppointment(null);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="w-full p-6">
       <h1 className="text-2xl font-bold text-gray-900 mb-4">Minhas Consultas</h1>
 
       {/* Filtros */}

@@ -1,77 +1,12 @@
-// src/components/dashboards/AdminDashboard.jsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Users, Calendar, UserCheck, FileText, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import useDashboard from "@/hooks/useDashboard";
 
 export default function AdminDashboard() {
-  const [loading, setLoading] = useState(true);
-  const [adminData, setAdminData] = useState(null);
+  const { data: adminData, loading } = useDashboard();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await new Promise((resolve) =>
-          setTimeout(
-            () =>
-              resolve({
-                indicadores: {
-                  totalPacientes: 156,
-                  novosPacientes: 12,
-                  consultasHoje: 24,
-                  terapeutasAtivos: 8,
-                  relatoriosPendentes: 3,
-                  taxaPresenca: "92%",
-                  onlineConfirmadas: 15,
-                  onlinePendentes: 5,
-                },
-                atividades: [
-                  { nome: "Dr. Silva", acao: "Login realizado", hora: "10:30", status: "sucesso" },
-                  { nome: "Maria Santos", acao: "Consulta realizada", hora: "10:15", status: "info" },
-                  { nome: "Desconhecido", acao: "Tentativa de login falhada", hora: "09:45", status: "erro" },
-                  { nome: "Dr. Costa", acao: "Relatório gerado", hora: "09:30", status: "aviso" },
-                ],
-                agenda: [
-                  { paciente: "João", terapeuta: "Dr. Silva", hora: "09:00", tipo: "Presencial", status: "confirmado" },
-                  { paciente: "Ana", terapeuta: "Dr. Costa", hora: "09:30", tipo: "Online", status: "pendente" },
-                  { paciente: "Carlos", terapeuta: "Maria Santos", hora: "10:00", tipo: "Presencial", status: "confirmado" },
-                ],
-                resumo: {
-                  consultasRealizadas: 127,
-                  novosPacientes: 12,
-                  consultasOnline: 45,
-                  taxaPresenca: "92%",
-                  usoModalidades: [
-                    { nome: "Individual", valor: 70 },
-                    { nome: "Coletiva", valor: 30 },
-                  ],
-                },
-                alertas: [
-                  { mensagem: "Paciente faltou na consulta", tipo: "erro" },
-                  { mensagem: "Terapeuta indisponível amanhã", tipo: "aviso" },
-                  { mensagem: "Novo paciente cadastrado", tipo: "sucesso" },
-                ],
-                gestao: {
-                  pacientes: 156,
-                  terapeutas: 8,
-                  salas: 12,
-                  modalidades: 5,
-                },
-              }),
-            1000
-          )
-        );
-        setAdminData(response);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (loading) return <Carregando />;
-  if (!adminData) return <Erro />;
+  if (loading || !adminData) return <Carregando />;
 
   return (
     <div className="space-y-8 px-6 py-6">
@@ -86,11 +21,11 @@ export default function AdminDashboard() {
       {/* Busca + Alertas */}
       <div className="flex flex-col lg:flex-row justify-between gap-4">
         <div className="flex items-center gap-3 flex-1">
-          <Search className="w-5 h-5 text-gray-400" />
+          <Search className="w-5 h-5 text-darktextSecondary" />
           <input
             type="text"
             placeholder="Buscar pacientes, terapeutas ou agendamentos..."
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+            className="w-full border border-darkborder rounded-lg px-3 py-2 text-sm bg-darkcard text-darktext focus:ring-2 focus:ring-green-400 focus:outline-none"
           />
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -98,9 +33,9 @@ export default function AdminDashboard() {
             <span
               key={i}
               className={`px-3 py-1 rounded-full text-sm font-medium
-                ${alerta.tipo === "sucesso" ? "bg-green-100 text-green-700" :
-                  alerta.tipo === "aviso" ? "bg-yellow-100 text-yellow-700" :
-                  "bg-red-100 text-red-700"}`}
+                ${alerta.tipo === "sucesso" ? "bg-green-700/20 text-green-400" :
+                  alerta.tipo === "aviso" ? "bg-yellow-700/20 text-yellow-400" :
+                  "bg-red-700/20 text-red-400"}`}
             >
               {alerta.mensagem}
             </span>
@@ -122,16 +57,15 @@ export default function AdminDashboard() {
     </div>
   );
 }
-
 // --- COMPONENTES AUXILIARES ---
 function Indicador({ icon, valor, label, cor }) {
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
+    <Card className="bg-darkcard border border-darkborder shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="flex items-center gap-4 p-5">
-        <div className={`p-3 rounded-full bg-${cor}-100 text-${cor}-600`}>{icon}</div>
+        <div className={`p-3 rounded-full bg-${cor}-600/20 text-${cor}-400`}>{icon}</div>
         <div>
-          <p className="text-sm text-gray-500">{label}</p>
-          <p className="text-2xl font-bold text-gray-800">{valor}</p>
+          <p className="text-sm text-darktextSecondary">{label}</p>
+          <p className="text-2xl font-bold text-darktext">{valor}</p>
         </div>
       </CardContent>
     </Card>
@@ -141,20 +75,20 @@ function Indicador({ icon, valor, label, cor }) {
 function AtividadesCard({ atividades }) {
   const coresStatus = { sucesso: "bg-green-500", info: "bg-blue-500", aviso: "bg-yellow-500", erro: "bg-red-500" };
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
+    <Card className="bg-darkcard border border-darkborder shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Atividades Recentes</h2>
+        <h2 className="text-lg font-semibold text-darktext mb-4">Atividades Recentes</h2>
         <div className="space-y-3">
           {atividades.map((item, i) => (
-            <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div key={i} className="flex items-center justify-between px-4 py-3 bg-darkbg/50 rounded-lg hover:bg-darkbg/70 transition">
               <div className="flex items-center gap-3">
                 <span className={`w-2.5 h-2.5 rounded-full ${coresStatus[item.status]}`}></span>
                 <div>
-                  <p className="font-medium text-gray-800">{item.nome}</p>
-                  <p className="text-sm text-gray-500">{item.acao}</p>
+                  <p className="font-medium text-darktext">{item.nome}</p>
+                  <p className="text-sm text-darktextSecondary">{item.acao}</p>
                 </div>
               </div>
-              <span className="text-sm text-gray-400">{item.hora}</span>
+              <span className="text-sm text-darktextSecondary">{item.hora}</span>
             </div>
           ))}
         </div>
@@ -165,20 +99,20 @@ function AtividadesCard({ atividades }) {
 
 function AgendaCard({ agenda }) {
   const coresStatus = {
-    confirmado: "bg-green-100 text-green-700",
-    pendente: "bg-yellow-100 text-yellow-700",
-    faltou: "bg-red-100 text-red-700",
+    confirmado: "bg-green-700/20 text-green-400",
+    pendente: "bg-yellow-700/20 text-yellow-400",
+    faltou: "bg-red-700/20 text-red-400",
   };
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
+    <Card className="bg-darkcard border border-darkborder shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Agenda do Dia</h2>
+        <h2 className="text-lg font-semibold text-darktext mb-4">Agenda do Dia</h2>
         <div className="space-y-3">
           {agenda.map((item, i) => (
-            <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div key={i} className="flex items-center justify-between px-4 py-3 bg-darkbg/50 rounded-lg hover:bg-darkbg/70 transition">
               <div>
-                <p className="font-medium text-gray-800">{item.paciente}</p>
-                <p className="text-sm text-gray-500">{item.terapeuta} • {item.tipo} • {item.hora}</p>
+                <p className="font-medium text-darktext">{item.paciente}</p>
+                <p className="text-sm text-darktextSecondary">{item.terapeuta} • {item.tipo} • {item.hora}</p>
               </div>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${coresStatus[item.status]}`}>{item.status}</span>
             </div>
@@ -191,9 +125,9 @@ function AgendaCard({ agenda }) {
 
 function ResumoSemanalCard({ resumo }) {
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
+    <Card className="bg-darkcard border border-darkborder shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Resumo da Semana</h2>
+        <h2 className="text-lg font-semibold text-darktext mb-4">Resumo da Semana</h2>
         <div className="space-y-4">
           <BarItem label="Consultas Realizadas" valor={resumo.consultasRealizadas} cor="green" />
           <BarItem label="Novos Pacientes" valor={resumo.novosPacientes} cor="blue" />
@@ -213,11 +147,11 @@ function BarItem({ label, valor, cor, isPercent = false }) {
   return (
     <div>
       <div className="flex justify-between text-sm mb-1">
-        <span className="text-gray-600">{label}</span>
-        <span className={`font-semibold text-${cor}-600`}>{valor}</span>
+        <span className="text-darktextSecondary">{label}</span>
+        <span className={`font-semibold text-${cor}-400`}>{valor}</span>
       </div>
-      <div className="w-full h-3 bg-gray-100 rounded-full">
-        <div className={`h-3 rounded-full bg-${cor}-500`} style={{ width: widthValue, transition: "width 0.3s ease" }} />
+      <div className="w-full h-3 bg-darkbg/50 rounded-full">
+        <div className={`h-3 rounded-full bg-${cor}-600`} style={{ width: widthValue, transition: "width 0.3s ease" }} />
       </div>
     </div>
   );
@@ -225,9 +159,9 @@ function BarItem({ label, valor, cor, isPercent = false }) {
 
 function GestaoCard({ gestao }) {
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all rounded-2xl">
+    <Card className="bg-darkcard border border-darkborder shadow-sm hover:shadow-md transition-all rounded-2xl">
       <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Gestão Rápida</h2>
+        <h2 className="text-lg font-semibold text-darktext mb-4">Gestão Rápida</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <CardGestao label="Pacientes" valor={gestao.pacientes} cor="blue" />
           <CardGestao label="Terapeutas" valor={gestao.terapeutas} cor="purple" />
@@ -241,17 +175,17 @@ function GestaoCard({ gestao }) {
 
 function CardGestao({ label, valor, cor }) {
   return (
-    <div className={`bg-${cor}-100 rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md transition`}>
-      <p className="text-gray-700 font-medium">{label}</p>
-      <p className={`text-xl font-bold text-${cor}-600`}>{valor}</p>
+    <div className={`bg-${cor}-700/20 rounded-xl p-4 flex flex-col items-center justify-center shadow-sm hover:shadow-md transition`}>
+      <p className="text-darktext font-medium">{label}</p>
+      <p className={`text-xl font-bold text-${cor}-400`}>{valor}</p>
     </div>
   );
 }
 
 function Carregando() {
-  return <div className="p-6 text-gray-600">Carregando dados...</div>;
+  return <div className="p-6 text-darktextSecondary">Carregando dados...</div>;
 }
 
 function Erro() {
-  return <div className="p-6 text-red-600">Erro ao carregar o dashboard.</div>;
+  return <div className="p-6 text-red-500">Erro ao carregar o dashboard.</div>;
 }
