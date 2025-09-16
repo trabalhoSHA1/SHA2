@@ -1,9 +1,6 @@
-// src/components/layout/Sidebar.jsx
 import React, { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Home, User, Calendar, Clock, Users, FileText, LayoutDashboard, Settings, ChevronRight, ChevronLeft
-} from 'lucide-react';
+import { Home, User, Calendar, Clock, Users, FileText, LayoutDashboard, Settings, ChevronRight, ChevronLeft } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { ThemeContext } from '@/context/ThemeContext';
 
@@ -52,18 +49,17 @@ export default function Sidebar() {
 
   const items = navItems[role] || [];
 
-  // Escolher cores conforme tema
-  const bg = theme === 'dark' ? 'bg-gray-900' : 'bg-green-100';
-  const border = theme === 'dark' ? 'border-gray-700' : 'border-green-200';
-  const text = theme === 'dark' ? 'text-gray-200' : 'text-green-900';
-  const hoverBg = theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-green-200';
-  const activeBg = theme === 'dark' ? 'bg-gray-800 font-semibold' : 'bg-green-300 font-semibold';
-  const toggleBg = theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700 text-gray-200' : 'bg-green-200 hover:bg-green-300 text-green-900';
+  const isDark = theme === 'dark';
+  const bg = isDark ? 'bg-[#0D0D0D]' : 'bg-green-100'; // preto mais escuro
+  const border = isDark ? 'border-[#1A1A1A]' : 'border-green-200';
+  const text = isDark ? 'text-gray-200' : 'text-green-900';
+  const hoverBg = isDark ? 'hover:bg-green-900' : 'hover:bg-green-200';
+  const activeBg = isDark ? 'bg-green-800 font-semibold' : 'bg-green-400 font-semibold';
+  const toggleBg = isDark ? 'bg-[#1F1F1F] hover:bg-[#2A2A2A] text-gray-200' : 'bg-green-200 hover:bg-green-300 text-green-900';
 
   return (
-    <aside className={`h-screen shadow-md transition-all duration-300 flex flex-col ${isExpanded ? 'w-56' : 'w-20'} ${bg} ${border}`}>
-      
-      {/* Toggle alinhado à esquerda, mesma altura dos ícones */}
+    <aside className={`h-screen shadow-md transition-all duration-300 flex flex-col ${isExpanded ? 'w-56' : 'w-20'} ${bg} border-r ${border}`}>
+      {/* Toggle botão */}
       <div className="flex items-center justify-start p-2 h-12">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -73,6 +69,7 @@ export default function Sidebar() {
         </button>
       </div>
 
+      {/* Navegação */}
       <nav className="flex-1 space-y-1 px-2">
         {items.map(({ label, icon, to }) => {
           const isActive = location.pathname === to;
@@ -80,8 +77,8 @@ export default function Sidebar() {
             <Link
               key={label}
               to={to}
-              className={`flex items-center gap-3 p-2 rounded-md transition-all 
-                ${isActive ? `${activeBg} ${text}` : `${hoverBg} ${text}`}`}
+              className={`flex items-center gap-3 p-2 rounded-md transition-all
+                ${isActive ? `${activeBg} text-green-400` : `${hoverBg} ${text}`}`}
             >
               {icon}
               {isExpanded && <span className="text-sm">{label}</span>}
@@ -90,11 +87,12 @@ export default function Sidebar() {
         })}
       </nav>
 
+      {/* Perfil do usuário */}
       {isExpanded && (
-        <div className={`p-4 mt-auto flex flex-col items-center border-t transition-colors ${theme === 'dark' ? 'border-gray-700' : 'border-green-200'}`}>
+        <div className={`p-4 mt-auto flex flex-col items-center border-t transition-colors ${isDark ? 'border-[#1A1A1A]' : 'border-green-200'}`}>
           <User size={30} className={`${text} mb-2`} />
           <span className={`font-medium ${text}`}>{user.name || 'Usuário'}</span>
-          <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-green-800'}`}>{roleNames[user.role] || 'Cargo Desconhecido'}</span>
+          <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-green-800'}`}>{roleNames[user.role] || 'Cargo Desconhecido'}</span>
         </div>
       )}
     </aside>

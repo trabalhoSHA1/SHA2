@@ -1,5 +1,5 @@
 // src/pages/administradores/AdminAppointmentsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Calendar, Filter, Search, Plus } from 'lucide-react';
 import AppointmentList from '../../features/appointments/components/AppointmentList';
 import { appointmentsMock } from '../../data/appointmentsMock';
@@ -7,8 +7,12 @@ import { Button } from '../../components/ui/button';
 import ViewAppointmentModal from '../../components/modals/ViewAppointmentModal';
 import EditAppointmentModal from '../../components/modals/EditAppointmentModal';
 import NewAppointmentModal from '../../components/modals/NewAppointmentModal';
+import { ThemeContext } from '@/context/ThemeContext';
 
 export default function AdminAppointmentsPage() {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [filterType, setFilterType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,12 +41,8 @@ export default function AdminAppointmentsPage() {
   const handleSaveNewAppointment = (appointment) => {
     setAppointments((prev) => [...prev, appointment]);
   };
-
-  const handleDelete = (id) => {
-    setAppointments(appointments.filter((apt) => apt.id !== id));
-  };
-
-  const handleStatusChange = (appointment) => {
+  const handleDelete = (id) => setAppointments(appointments.filter((apt) => apt.id !== id));
+  const handleStatusChange = (appointment) =>
     setAppointments(
       appointments.map((apt) =>
         apt.id === appointment.id
@@ -58,11 +58,8 @@ export default function AdminAppointmentsPage() {
           : apt
       )
     );
-  };
-
   const handleViewDetails = (appointment) => setViewAppointment(appointment);
   const handleCloseView = () => setViewAppointment(null);
-
   const handleEdit = (appointment) => setEditAppointment(appointment);
   const handleSaveEditedAppointment = (updatedAppointment) => {
     setAppointments(
@@ -73,15 +70,23 @@ export default function AdminAppointmentsPage() {
     setEditAppointment(null);
   };
 
+  // classes dinâmicas dark/light
+  const bgCard = isDark ? 'bg-[#1F1F1F] border-[#2C2C2C] text-gray-200' : 'bg-white border-gray-200 text-gray-900';
+  const bgFilter = isDark ? 'bg-[#1F1F1F] border-[#2C2C2C] text-gray-200' : 'bg-white border-gray-300 text-gray-900';
+  const inputBg = isDark ? 'bg-[#2A2A2A] text-gray-200 border-[#2C2C2C]' : 'bg-white text-gray-900 border-gray-300';
+  const pageBg = isDark ? 'bg-[#121212]' : 'bg-gray-50';
+
   return (
-    <div className="w-full p-6">
+    <div className={`w-full p-6 transition-colors duration-300 ${pageBg}`}>
       {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+          <h1 className={`text-2xl sm:text-3xl font-bold mb-1 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>
             Gerenciamento de Consultas
           </h1>
-          <p className="text-gray-600">Visualize e gerencie todos os compromissos</p>
+          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+            Visualize e gerencie todos os compromissos
+          </p>
         </div>
         <Button
           onClick={() => setShowNewModal(true)}
@@ -93,32 +98,32 @@ export default function AdminAppointmentsPage() {
       </div>
 
       {/* Filtros */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className={`rounded-lg shadow-sm border p-4 sm:p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 transition-colors ${bgFilter}`}>
         <div className="flex items-center gap-3">
-          <Calendar className="w-5 h-5 text-blue-600" />
+          <Calendar className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            className={`w-full px-3 py-2 rounded-lg border ${inputBg}`}
           />
         </div>
         <div className="flex items-center gap-3">
-          <Search className="w-5 h-5 text-gray-400" />
+          <Search className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           <input
             type="text"
             placeholder="Paciente ou Terapeuta..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            className={`w-full px-3 py-2 rounded-lg border ${inputBg}`}
           />
         </div>
         <div className="flex items-center gap-3">
-          <Filter className="w-5 h-5 text-gray-400" />
+          <Filter className={`w-5 h-5 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            className={`w-full px-3 py-2 rounded-lg border ${inputBg}`}
           >
             <option value="all">Todas</option>
             <option value="presencial">Presencial</option>
@@ -136,6 +141,7 @@ export default function AdminAppointmentsPage() {
         onEdit={handleEdit}
         onChangeStatus={handleStatusChange}
         onDelete={handleDelete}
+        isDark={isDark}
       />
 
       {/* Modal nova consulta */}

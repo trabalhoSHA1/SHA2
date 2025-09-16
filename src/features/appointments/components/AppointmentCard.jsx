@@ -1,4 +1,3 @@
-// src/shared/components/appointments/AppointmentCard.jsx
 import React from 'react';
 import { Clock, User, MapPin, Video, Phone, Mail, Eye, Edit, Trash, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,48 +11,70 @@ export default function AppointmentCard({
   onEdit,
   onDelete,
   onChangeStatus,
+  isDark = false, // tema escuro
 }) {
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'confirmado':
-        return 'bg-green-100 text-green-800 border-green-300';
-      case 'pendente':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case 'cancelado':
-        return 'bg-red-100 text-red-800 border-red-300';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
+    if (isDark) {
+      switch (status) {
+        case 'confirmado':
+          return 'bg-green-700/20 text-green-400 border-green-700';
+        case 'pendente':
+          return 'bg-yellow-700/20 text-yellow-400 border-yellow-700';
+        case 'cancelado':
+          return 'bg-red-700/20 text-red-400 border-red-700';
+        default:
+          return 'bg-[#1F1F1F] text-gray-200 border-[#2C2C2C]';
+      }
+    } else {
+      switch (status) {
+        case 'confirmado':
+          return 'bg-green-100 text-green-800 border-green-300';
+        case 'pendente':
+          return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+        case 'cancelado':
+          return 'bg-red-100 text-red-800 border-red-300';
+        default:
+          return 'bg-gray-100 text-gray-800 border-gray-300';
+      }
     }
   };
 
   const isOnline = appointment.type === 'online';
 
   return (
-    <div className="p-4 sm:p-6 hover:bg-gray-50 transition-colors border-b border-gray-200 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+    <div
+      className={`p-4 sm:p-6 transition-colors border-b flex flex-col sm:flex-row sm:items-center gap-4 justify-between
+        ${isDark 
+          ? 'bg-[#1F1F1F] border-[#2C2C2C] hover:bg-[#2A2A2A] text-gray-200'
+          : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-900'}
+      `}
+    >
       {/* Informações principais */}
       <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
         {/* Horário */}
         <div className="flex items-center gap-3">
-          <Clock className="w-5 h-5 text-blue-600" />
+          <Clock className={isDark ? 'w-5 h-5 text-blue-400' : 'w-5 h-5 text-blue-600'} />
           <div>
-            <p className="font-medium text-gray-900">{appointment.time}</p>
-            <p className="text-sm text-gray-500">{appointment.duration} min</p>
+            <p className="font-medium">{appointment.time}</p>
+            <p className={isDark ? 'text-gray-400 text-sm' : 'text-gray-500 text-sm'}>
+              {appointment.duration} min
+            </p>
           </div>
         </div>
 
         {/* Paciente e terapeuta */}
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <User className="w-4 h-4 text-gray-400" />
-            <span className="font-medium text-gray-900">{appointment.patient}</span>
+            <User className={isDark ? 'w-4 h-4 text-gray-400' : 'w-4 h-4 text-gray-400'} />
+            <span className="font-medium">{appointment.patient}</span>
             {showTherapist && (
-              <span className="ml-4 text-sm text-gray-600">
+              <span className={isDark ? 'ml-4 text-sm text-gray-400' : 'ml-4 text-sm text-gray-600'}>
                 Terapeuta: {appointment.therapist}
               </span>
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+          <div className="flex flex-wrap items-center gap-4 text-sm">
             {isOnline ? (
               <div className="flex items-center gap-1">
                 <Video className="w-4 h-4" />
@@ -100,31 +121,28 @@ export default function AppointmentCard({
             <button
               onClick={() => onView?.(appointment)}
               title="Visualizar"
-              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+              className={`p-2 rounded-full hover:text-green-500 ${isDark ? 'text-gray-300 hover:bg-[#2A2A2A]' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <Eye className="w-5 h-5" />
             </button>
-
             <button
               onClick={() => onEdit?.(appointment)}
               title="Editar"
-              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+              className={`p-2 rounded-full hover:text-green-500 ${isDark ? 'text-gray-300 hover:bg-[#2A2A2A]' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <Edit className="w-5 h-5" />
             </button>
-
             <button
               onClick={() => onDelete?.(appointment.id)}
               title="Excluir"
-              className="p-2 text-gray-500 hover:text-red-600 rounded-full hover:bg-gray-100"
+              className={`p-2 rounded-full hover:text-red-500 ${isDark ? 'text-gray-300 hover:bg-[#2A2A2A]' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <Trash className="w-5 h-5" />
             </button>
-
             <button
               onClick={() => onChangeStatus?.(appointment)}
               title="Mudar Status"
-              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+              className={`p-2 rounded-full hover:text-green-500 ${isDark ? 'text-gray-300 hover:bg-[#2A2A2A]' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <Check className="w-5 h-5" />
             </button>
@@ -137,7 +155,7 @@ export default function AppointmentCard({
             <button
               onClick={() => onView?.(appointment)}
               title="Visualizar"
-              className="p-2 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100"
+              className={`p-2 rounded-full hover:text-green-500 ${isDark ? 'text-gray-300 hover:bg-[#2A2A2A]' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <Eye className="w-5 h-5" />
             </button>

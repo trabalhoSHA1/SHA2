@@ -9,11 +9,14 @@ export default function Layout({ children }) {
   const { user, loading } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
-  const bg = theme === 'dark' ? 'bg-gray-900' : 'bg-white';
-  const mainBg = theme === 'dark' ? 'bg-gray-900' : 'bg-white';
+  const isDark = theme === 'dark';
+
+  // Fundo principal do layout igual ao AdminDashboard
+  const bg = isDark ? 'bg-[#121212]' : 'bg-gray-50';
+  const mainBg = isDark ? 'bg-[#121212]' : 'bg-gray-50';
 
   return (
-    <div className={`flex h-screen ${bg}`}>
+    <div className={`flex h-screen transition-colors duration-300 ${bg}`}>
       <Sidebar user={user} loading={loading} />
 
       <div className={`flex-1 flex flex-col min-h-0 transition-colors duration-300 ${mainBg}`}>
