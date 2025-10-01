@@ -1,6 +1,6 @@
-// src/pages/assistentes/AssistantAppointmentsPage.jsx
+// src/pages/assistentes/AssistantAppointmentPage.jsx
 import AdminAppointmentsPage from "../administradores/AdminAppointmentPage";
 
 export default function AssistantAppointmentsPage() {
-  return <AdminAppointmentsPage />;
+  return <AdminAppointmentPage />;
 }

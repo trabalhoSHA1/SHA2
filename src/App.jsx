@@ -13,16 +13,18 @@ import AdminDashboard from "./components/dashboards/AdminDashboard";
 import AssistantDashboard from "./components/dashboards/AssistantDashboard";
 
 // Pacientes
-import PatientPage from "./pages/shared/PatientPage";
+import AdminPatientPage from "./pages/administradores/AdminPatientPage";
+import AssistantPatientPage from "./pages/assistentes/AssistantTherapistPage";
+import TherapistPatientPage from "./pages/terapeutas/TherapistPatientPage";
 import PatientDetailPage from "./pages/terapeutas/PatientDetailPage";
 import PatientRecordsPage from "./pages/terapeutas/PatientRecordsPage";
 import PatientMedicalRecord from "./pages/terapeutas/PatientMedicalRecord";
 import AllMedicalRecordsPage from "./pages/terapeutas/AllMedicalRecordsPage";
 
 // Consultas
-import AdminAppointmentsPage from "./pages/administradores/AdminAppointmentPage";
+import AdminAppointmentPage from "./pages/administradores/AdminAppointmentPage";
 import TherapistAppointmentPage from "./pages/terapeutas/TherapistAppointmentPage";
-import AssistantAppointmentsPage from "./pages/assistentes/AssistantAppointmentPage";
+import AssistantAppointmentPage from "./pages/assistentes/AssistantAppointmentPage";
 
 // Terapeutas
 import AdminTherapistPage from "./pages/administradores/AdminTherapistPage";
@@ -36,12 +38,27 @@ import ProfilePage from "./pages/shared/ProfilePage";
 export default function App() {
   const { user } = useAuth();
 
-  const renderAppointmentsPage = () => {
+  // Render dinâmico de página de pacientes
+  const renderPatientsPage = () => {
     switch (user?.role) {
       case "admin":
-        return <AdminAppointmentsPage />;
+        return <AdminPatientPage />;
       case "assistant":
-        return <AssistantAppointmentsPage />;
+        return <AssistantPatientPage />;
+      case "terapeuta":
+        return <TherapistPatientPage />;
+      default:
+        return <TherapistPatientPage />;
+    }
+  };
+
+  // Render dinâmico de página de consultas
+  const renderAppointmentPage = () => {
+    switch (user?.role) {
+      case "admin":
+        return <AdminAppointmentPage />;
+      case "assistant":
+        return <AssistantAppointmentPage />;
       case "terapeuta":
         return <TherapistAppointmentPage />;
       default:
@@ -84,14 +101,7 @@ export default function App() {
           />
 
           {/* Rotas de pacientes */}
-          <Route
-            path="/patients"
-            element={
-              <Layout>
-                <PatientPage />
-              </Layout>
-            }
-          />
+          <Route path="/patients" element={<Layout>{renderPatientsPage()}</Layout>} />
           <Route
             path="/patients/:siape"
             element={
@@ -120,11 +130,12 @@ export default function App() {
           {/* Rotas de consultas */}
           <Route
             path="/appointments"
-            element={<Layout>{renderAppointmentsPage()}</Layout>}
+            element={<Layout>{renderAppointmentPage()}</Layout>}
           />
 
+          {/* Terapeutas */}
           <Route
-            path="/terapeutas"
+            path="/therapists"
             element={
               <Layout>
                 <AdminTherapistPage />
@@ -133,46 +144,11 @@ export default function App() {
           />
 
           {/* Outras páginas */}
-          <Route
-            path="/schedule"
-            element={
-              <Layout>
-                <SchedulePage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/prontuarios"
-            element={
-              <Layout>
-                <AllMedicalRecordsPage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/rooms"
-            element={
-              <Layout>
-                <RoomsPage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <Layout>
-                <SettingsPage />
-              </Layout>
-            }
-          />
-          <Route
-            path="/perfil"
-            element={
-              <Layout>
-                <ProfilePage />
-              </Layout>
-            }
-          />
+          <Route path="/schedule" element={<Layout><SchedulePage /></Layout>} />
+          <Route path="/prontuarios" element={<Layout><AllMedicalRecordsPage /></Layout>} />
+          <Route path="/rooms" element={<Layout><RoomsPage /></Layout>} />
+          <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+          <Route path="/perfil" element={<Layout><ProfilePage /></Layout>} />
 
           {/* Rota padrão */}
           <Route path="/" element={<Login />} />

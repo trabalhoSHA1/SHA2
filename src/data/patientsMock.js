@@ -1,7 +1,44 @@
+// src/data/patientsMock.js
 export const patientsMock = [
-    { id: 1, name: "Maria", age: 30 },
-    { id: 2, name: "João", age: 25 },
-    { id: 3, name: "Ana", age: 40 },
-    { id: 4, name: "Pedro", age: 19 }
-  ];
-  
+  {
+    profileType: 'professor',
+    name: 'Maria Silva Santos',
+    birthDate: '12/03/1980',
+    address: 'Rua das Flores, 123 - São Paulo/SP',
+    contact: '(11) 99999-9999',
+    siape: '123456',
+    emergencyContact: '(11) 98888-8888',
+    unit: 'Unidade Central',
+  },
+  {
+    profileType: 'tecnico',
+    name: 'João Pereira Lima',
+    birthDate: '05/08/1975',
+    address: 'Av. Brasil, 456 - Rio de Janeiro/RJ',
+    contact: '(21) 98888-7777',
+    siape: '654321',
+    cargo: 'Analista Administrativo',
+    emergencyContact: '(21) 97777-6666',
+    unit: 'Unidade Sul',
+  },
+  {
+    profileType: 'aluno',
+    birthDate: '20/01/2000',
+    address: 'Rua das Laranjeiras, 789 - Belo Horizonte/MG',
+    contact: '(31) 99999-1111',
+    emergencyContact: '(31) 98888-2222',
+    matricula: 'DRE2023001',
+    level: 'Graduação',
+    course: 'Engenharia de Computação',
+  },
+  {
+    profileType: 'outro',
+    name: 'Ana Oliveira Costa',
+    birthDate: '15/07/1990',
+    address: 'Travessa das Acácias, 321 - Curitiba/PR',
+    contact: '(41) 97777-3333',
+    emergencyContact: '(41) 96666-4444',
+    cpf: '123.456.789-00',
+    cargo: 'Coordenadora',
+  },
+];

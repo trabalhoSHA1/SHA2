@@ -6,26 +6,34 @@ import { appointmentsMock } from '../../data/appointmentsMock';
 import { Button } from '../../components/ui/button';
 import ViewAppointmentModal from '../../components/modals/ViewAppointmentModal';
 import EditAppointmentModal from '../../components/modals/EditAppointmentModal';
-import NewAppointmentModal from '../../components/modals/NewAppointmentModal';
-import { ThemeContext } from '@/context/ThemeContext';
+import { ThemeContext } from '../../context/ThemeContext';
 
-export default function AdminAppointmentsPage() {
+
+// Importa o formulário diretamente
+import NewAppointmentForm from '../../components/forms/NewAppointmentForm';
+
+
+export default function AdminAppointmentPage() {
   const { theme } = useContext(ThemeContext);
   const isDark = theme === 'dark';
+
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [filterType, setFilterType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [appointments, setAppointments] = useState([]);
 
+
   // modais
   const [showNewModal, setShowNewModal] = useState(false);
   const [viewAppointment, setViewAppointment] = useState(null);
   const [editAppointment, setEditAppointment] = useState(null);
 
+
   useEffect(() => {
     setAppointments(appointmentsMock);
   }, []);
+
 
   // --- filtros ---
   const filteredAppointments = appointments.filter((apt) => {
@@ -37,11 +45,16 @@ export default function AdminAppointmentsPage() {
     return matchesDate && matchesType && matchesSearch;
   });
 
+
   // --- CRUD ---
   const handleSaveNewAppointment = (appointment) => {
     setAppointments((prev) => [...prev, appointment]);
   };
+
+
   const handleDelete = (id) => setAppointments(appointments.filter((apt) => apt.id !== id));
+
+
   const handleStatusChange = (appointment) =>
     setAppointments(
       appointments.map((apt) =>
@@ -58,9 +71,15 @@ export default function AdminAppointmentsPage() {
           : apt
       )
     );
+
+
   const handleViewDetails = (appointment) => setViewAppointment(appointment);
   const handleCloseView = () => setViewAppointment(null);
+
+
   const handleEdit = (appointment) => setEditAppointment(appointment);
+
+
   const handleSaveEditedAppointment = (updatedAppointment) => {
     setAppointments(
       appointments.map((apt) =>
@@ -70,11 +89,16 @@ export default function AdminAppointmentsPage() {
     setEditAppointment(null);
   };
 
+
   // classes dinâmicas dark/light
-  const bgCard = isDark ? 'bg-[#1F1F1F] border-[#2C2C2C] text-gray-200' : 'bg-white border-gray-200 text-gray-900';
-  const bgFilter = isDark ? 'bg-[#1F1F1F] border-[#2C2C2C] text-gray-200' : 'bg-white border-gray-300 text-gray-900';
-  const inputBg = isDark ? 'bg-[#2A2A2A] text-gray-200 border-[#2C2C2C]' : 'bg-white text-gray-900 border-gray-300';
+  const bgFilter = isDark
+    ? 'bg-[#1F1F1F] border-[#2C2C2C] text-gray-200'
+    : 'bg-white border-gray-300 text-gray-900';
+  const inputBg = isDark
+    ? 'bg-[#2A2A2A] text-gray-200 border-[#2C2C2C]'
+    : 'bg-white text-gray-900 border-gray-300';
   const pageBg = isDark ? 'bg-[#121212]' : 'bg-gray-50';
+
 
   return (
     <div className={`w-full p-6 transition-colors duration-300 ${pageBg}`}>
@@ -88,6 +112,9 @@ export default function AdminAppointmentsPage() {
             Visualize e gerencie todos os compromissos
           </p>
         </div>
+
+
+        {/* Botão Nova Consulta */}
         <Button
           onClick={() => setShowNewModal(true)}
           className="mt-4 sm:mt-0 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
@@ -97,8 +124,11 @@ export default function AdminAppointmentsPage() {
         </Button>
       </div>
 
+
       {/* Filtros */}
-      <div className={`rounded-lg shadow-sm border p-4 sm:p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 transition-colors ${bgFilter}`}>
+      <div
+        className={`rounded-lg shadow-sm border p-4 sm:p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 transition-colors ${bgFilter}`}
+      >
         <div className="flex items-center gap-3">
           <Calendar className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
           <input
@@ -132,6 +162,7 @@ export default function AdminAppointmentsPage() {
         </div>
       </div>
 
+
       {/* Lista de consultas */}
       <AppointmentList
         appointments={filteredAppointments}
@@ -144,22 +175,47 @@ export default function AdminAppointmentsPage() {
         isDark={isDark}
       />
 
-      {/* Modal nova consulta */}
-      <NewAppointmentModal
-        showModal={showNewModal}
-        onClose={() => setShowNewModal(false)}
-        onSave={handleSaveNewAppointment}
-      />
 
-      {/* Modal detalhes */}
+      {/* Modal Nova Consulta */}
+      {showNewModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div
+            className={`w-full max-w-lg p-6 rounded-xl shadow-lg transition-colors ${
+              isDark ? 'bg-[#1F1F1F] text-gray-200' : 'bg-white text-gray-900'
+            }`}
+          >
+            {/* Header Modal */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Nova Consulta</h2>
+              <button
+                onClick={() => setShowNewModal(false)}
+                className="p-2 rounded-full hover:bg-gray-200/20"
+              >
+                X
+              </button>
+            </div>
+
+
+            {/* Formulário */}
+            <NewAppointmentForm
+              onSubmit={handleSaveNewAppointment}
+              onClose={() => setShowNewModal(false)}
+            />
+          </div>
+        </div>
+      )}
+
+
+      {/* Modal Detalhes */}
       {viewAppointment && (
         <ViewAppointmentModal
           appointment={viewAppointment}
-          onClose={handleCloseView}
+          onClose={() => setViewAppointment(null)}
         />
       )}
 
-      {/* Modal edição */}
+
+      {/* Modal Edição */}
       {editAppointment && (
         <EditAppointmentModal
           appointment={editAppointment}
@@ -170,3 +226,5 @@ export default function AdminAppointmentsPage() {
     </div>
   );
 }
+
+

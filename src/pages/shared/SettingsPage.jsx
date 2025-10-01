@@ -4,9 +4,6 @@ import { User, Bell, Moon, Lock } from 'lucide-react';
 import { ThemeContext } from '../../context/ThemeContext'; 
 
 export default function SettingsPage() {
-  console.log('рендерizando Página de Configurações');
-
-  // Estados locais
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [smsNotifications, setSmsNotifications] = useState(false);
   const [appointmentReminders, setAppointmentReminders] = useState(true);
@@ -14,19 +11,30 @@ export default function SettingsPage() {
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
   const [sessionTimeout, setSessionTimeout] = useState(30);
 
-  // Pega o tema global do contexto
   const { theme, setTheme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+
+  // classes dinâmicas
+  const pageBg = isDark ? 'bg-[#121212]' : 'bg-gray-50';
+  const cardBg = isDark
+    ? 'bg-[#1F1F1F] border border-[#2C2C2C] text-gray-200'
+    : 'bg-white border border-gray-200 text-gray-900';
+  const inputBg = isDark
+    ? 'bg-[#2A2A2A] border-[#2C2C2C] text-gray-200'
+    : 'bg-white border border-gray-300 text-gray-900';
+  const textPrimary = isDark ? 'text-gray-200' : 'text-gray-800';
+  const textSecondary = isDark ? 'text-gray-300' : 'text-gray-600';
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Configurações</h1>
-      <p className="text-gray-600 dark:text-gray-300 mb-6">
+    <div className={`p-6 min-h-screen transition-colors duration-300 ${pageBg}`}>
+      <h1 className={`text-2xl font-bold mb-4 ${textPrimary}`}>Configurações</h1>
+      <p className={`mb-6 ${textSecondary}`}>
         Gerencie suas preferências e configurações do sistema.
       </p>
 
       {/* Perfil do Usuário */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 transition-colors duration-300">
-        <h2 className="text-lg font-semibold mb-2 flex items-center dark:text-gray-100">
+      <div className={`rounded-lg shadow-md p-4 mb-4 transition-colors duration-300 ${cardBg}`}>
+        <h2 className={`text-lg font-semibold mb-2 flex items-center ${textPrimary}`}>
           <User className="w-5 h-5 mr-2" />
           Perfil do Usuário
         </h2>
@@ -37,13 +45,13 @@ export default function SettingsPage() {
             { label: 'Telefone', type: 'tel', placeholder: '(99) 99999-9999' },
           ].map((field, i) => (
             <div className="mb-2" key={i}>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className={`block text-sm font-medium ${textSecondary}`}>
                 {field.label}
               </label>
               <input
                 type={field.type}
                 placeholder={field.placeholder}
-                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 dark:text-gray-100 transition-colors duration-300"
+                className={`mt-1 block w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 sm:text-sm transition-colors duration-300 ${inputBg}`}
               />
             </div>
           ))}
@@ -51,20 +59,39 @@ export default function SettingsPage() {
       </div>
 
       {/* Notificações */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 transition-colors duration-300">
-        <h2 className="text-lg font-semibold mb-2 flex items-center dark:text-gray-100">
+      <div className={`rounded-lg shadow-md p-4 mb-4 transition-colors duration-300 ${cardBg}`}>
+        <h2 className={`text-lg font-semibold mb-2 flex items-center ${textPrimary}`}>
           <Bell className="w-5 h-5 mr-2 text-yellow-500" />
           Notificações
         </h2>
         {[
-          { label: 'Notificações por E-mail', checked: emailNotifications, setChecked: setEmailNotifications, desc: 'Receber notificações via e-mail' },
-          { label: 'Notificações SMS', checked: smsNotifications, setChecked: setSmsNotifications, desc: 'Receber notificações via SMS' },
-          { label: 'Lembretes de Consulta', checked: appointmentReminders, setChecked: setAppointmentReminders, desc: 'Receber lembretes antes das consultas' },
+          {
+            label: 'Notificações por E-mail',
+            checked: emailNotifications,
+            setChecked: setEmailNotifications,
+            desc: 'Receber notificações via e-mail',
+          },
+          {
+            label: 'Notificações SMS',
+            checked: smsNotifications,
+            setChecked: setSmsNotifications,
+            desc: 'Receber notificações via SMS',
+          },
+          {
+            label: 'Lembretes de Consulta',
+            checked: appointmentReminders,
+            setChecked: setAppointmentReminders,
+            desc: 'Receber lembretes antes das consultas',
+          },
         ].map((item, i) => (
           <div key={i} className="flex items-center justify-between mb-2">
             <div>
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.label}</label>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{item.desc}</p>
+              <label className={`text-sm font-medium ${textSecondary}`}>
+                {item.label}
+              </label>
+              <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                {item.desc}
+              </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -80,8 +107,8 @@ export default function SettingsPage() {
       </div>
 
       {/* Aparência */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 transition-colors duration-300">
-        <h2 className="text-lg font-semibold mb-2 flex items-center dark:text-gray-100">
+      <div className={`rounded-lg shadow-md p-4 mb-4 transition-colors duration-300 ${cardBg}`}>
+        <h2 className={`text-lg font-semibold mb-2 flex items-center ${textPrimary}`}>
           <Moon className="w-5 h-5 mr-2 text-purple-500" />
           Aparência
         </h2>
@@ -90,8 +117,8 @@ export default function SettingsPage() {
             onClick={() => setTheme('light')}
             className={`px-4 py-2 rounded-lg ${
               theme === 'light'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                ? 'bg-green-500 text-white'
+                : `${isDark ? 'bg-[#2A2A2A] text-gray-300' : 'bg-gray-200 text-gray-700'}`
             } transition-colors duration-300`}
           >
             Claro
@@ -100,19 +127,19 @@ export default function SettingsPage() {
             onClick={() => setTheme('dark')}
             className={`px-4 py-2 rounded-lg ${
               theme === 'dark'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                ? 'bg-green-500 text-white'
+                : `${isDark ? 'bg-[#2A2A2A] text-gray-300' : 'bg-gray-200 text-gray-700'}`
             } transition-colors duration-300`}
           >
             Escuro
           </button>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Idioma</label>
+          <label className={`block text-sm font-medium ${textSecondary}`}>Idioma</label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 dark:text-gray-100 transition-colors duration-300"
+            className={`mt-1 block w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 sm:text-sm transition-colors duration-300 ${inputBg}`}
           >
             <option value="pt-BR">Português</option>
             <option value="en-US">Inglês</option>
@@ -122,17 +149,19 @@ export default function SettingsPage() {
       </div>
 
       {/* Segurança */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 transition-colors duration-300">
-        <h2 className="text-lg font-semibold mb-2 flex items-center dark:text-gray-100">
+      <div className={`rounded-lg shadow-md p-4 mb-4 transition-colors duration-300 ${cardBg}`}>
+        <h2 className={`text-lg font-semibold mb-2 flex items-center ${textPrimary}`}>
           <Lock className="w-5 h-5 mr-2 text-red-500" />
           Segurança
         </h2>
         <div className="flex items-center justify-between mb-2">
           <div>
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className={`text-sm font-medium ${textSecondary}`}>
               Autenticação de Dois Fatores
             </label>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Adicione uma camada extra de segurança</p>
+            <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              Adicione uma camada extra de segurança
+            </p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
@@ -145,12 +174,14 @@ export default function SettingsPage() {
           </label>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Timeout da Sessão (minutos)</label>
+          <label className={`block text-sm font-medium ${textSecondary}`}>
+            Timeout da Sessão (minutos)
+          </label>
           <input
             type="number"
             value={sessionTimeout}
             onChange={(e) => setSessionTimeout(Number(e.target.value))}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 dark:text-gray-100 transition-colors duration-300"
+            className={`mt-1 block w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 sm:text-sm transition-colors duration-300 ${inputBg}`}
           />
         </div>
       </div>

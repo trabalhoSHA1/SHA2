@@ -1,67 +1,41 @@
 // src/components/schedule/DailySchedule.jsx
-import React, { useState } from 'react';
-import { Calendar, Clock, User, MapPin } from 'lucide-react';
+import React from 'react';
+import { Calendar, Clock, MapPin } from 'lucide-react';
 
-export default function DailySchedule({ selectedDate }) {
+export default function DailySchedule({ selectedDate, isDark }) {
   console.log('рендерizando Agenda Diária para:', selectedDate);
   
-  // Simulando dados das consultas
+  // Simulação de dados das consultas
   const appointments = [
-    {
-      id: 1,
-      time: '09:00',
-      patient: 'Maria Silva Santos',
-      type: 'presencial',
-      room: 'Sala 101',
-      status: 'Confirmado'
-    },
-    {
-      id: 2,
-      time: '10:30',
-      patient: 'João Santos Lima',
-      type: 'presencial',
-      room: 'Sala 102',
-      status: 'Confirmado'
-    },
-    {
-      id: 3,
-      time: '11:30',
-      patient: 'Ana Costa Pereira',
-      type: 'presencial',
-      room: 'Sala 103',
-      status: 'Pendente'
-    },
-    {
-      id: 4,
-      time: '14:00',
-      patient: 'Carlos Mendes Almeida',
-      type: 'presencial',
-      room: 'Sala 101',
-      status: 'Confirmado'
-    }
+    { id: 1, time: '09:00', patient: 'Maria Silva Santos', type: 'presencial', room: 'Sala 101', status: 'Confirmado' },
+    { id: 2, time: '10:30', patient: 'João Santos Lima', type: 'presencial', room: 'Sala 102', status: 'Confirmado' },
+    { id: 3, time: '11:30', patient: 'Ana Costa Pereira', type: 'presencial', room: 'Sala 103', status: 'Pendente' },
+    { id: 4, time: '14:00', patient: 'Carlos Mendes Almeida', type: 'presencial', room: 'Sala 101', status: 'Confirmado' },
   ];
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    return date.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   };
+
+  // Cores dinâmicas dark/light
+  const cardBg = isDark ? 'bg-[#1F1F1F] border-[#2C2C2C] text-gray-200' : 'bg-white border-gray-200 text-gray-900';
+  const cardHover = isDark ? 'hover:bg-[#2A2A2A]' : 'hover:bg-gray-50';
+  const titleColor = isDark ? 'text-gray-200' : 'text-gray-800';
+  const textColor = isDark ? 'text-gray-200' : 'text-gray-900';
+  const subTextColor = isDark ? 'text-gray-400' : 'text-gray-500';
 
   return (
     <div className="space-y-4">
       {/* Cabeçalho com data */}
-      <div className="flex items-center justify-between bg-white rounded-lg shadow-sm p-3">
+      <div className={`flex items-center justify-between rounded-lg shadow-sm p-3 ${cardBg} ${cardHover} transition-colors`}>
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-green-600" />
-          <span className="text-sm font-medium text-gray-800">
+          <span className={`text-sm font-medium ${titleColor}`}>
             {formatDate(selectedDate)}
           </span>
         </div>
-        <div className="text-xs text-gray-500">
+        <div className={`text-xs ${subTextColor}`}>
           {appointments.length} consulta(s)
         </div>
       </div>
@@ -71,21 +45,21 @@ export default function DailySchedule({ selectedDate }) {
         {appointments.map((appointment) => (
           <div 
             key={appointment.id} 
-            className="bg-white rounded-lg shadow-sm p-3 border border-gray-200 hover:bg-gray-50 transition-colors"
+            className={`rounded-lg shadow-sm p-3 border ${cardBg} ${cardHover} transition-colors`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className={`text-sm font-medium ${textColor}`}>
                     {appointment.time}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className={`text-sm font-medium ${textColor}`}>
                     {appointment.patient}
                   </p>
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                  <div className={`flex items-center gap-1 text-xs ${subTextColor}`}>
                     <MapPin className="w-3 h-3" />
                     <span>{appointment.room}</span>
                   </div>
@@ -93,7 +67,6 @@ export default function DailySchedule({ selectedDate }) {
               </div>
               
               <div className="flex items-center gap-2">
-                {/* STATUS */}
                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                   appointment.status === 'Confirmado' 
                     ? 'bg-green-100 text-green-800' 
@@ -103,7 +76,7 @@ export default function DailySchedule({ selectedDate }) {
                 </span>
             
                 <button 
-                  className="p-1.5 text-gray-500 hover:text-green-600 rounded-full hover:bg-gray-100 transition-colors"
+                  className={`p-1.5 text-gray-500 hover:text-green-600 rounded-full ${isDark ? 'hover:bg-[#2A2A2A]' : 'hover:bg-gray-100'} transition-colors`}
                   onClick={() => alert(`Visualizar consulta: ${appointment.patient}`)}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

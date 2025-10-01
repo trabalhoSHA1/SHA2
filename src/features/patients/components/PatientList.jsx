@@ -1,116 +1,63 @@
 // src/features/patients/components/PatientList.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, Edit, Trash, FileText } from 'lucide-react';
+import { Eye } from 'lucide-react';
+import { patientsMock } from '../../../data/patientsMock';
 
-export default function PatientList({
-  patients = [],
-  canEdit = false,
-  showTherapistColumn = false,
-  showRecordsButton = true,
-  showDeleteButton = false,
-}) {
+export default function PatientList({ patients = patientsMock, isDark = false }) {
+  const cardBg = isDark ? 'bg-[#1F1F1F] text-gray-200' : 'bg-white text-gray-900';
+  const hoverBg = isDark ? 'hover:bg-[#2A2A2A]' : 'hover:bg-gray-100';
+  const textGray = isDark ? 'text-gray-400' : 'text-gray-500';
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {patients.map((patient, index) => (
-        <div
-          key={index}
-          className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition"
-        >
-          {/* Header do Card */}
-          <div className="flex items-center justify-between">
-            {/* Avatar + Nome */}
-            <div className="flex items-center space-x-2">
-              <div className="bg-green-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
-                {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
-              </div>
-              <div>
-                <h2 className="text-lg font-medium">{patient.name}</h2>
-                <p className="text-sm text-gray-500">CPF: {patient.siape}</p>
-                {showTherapistColumn && (
-                  <p className="text-sm text-gray-500">
-                    Terapeuta: {patient.therapistName}
-                  </p>
-                )}
-              </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {patients.map((patient) => (
+        <div key={patient.siape || patient.id} className={`p-4 rounded-lg shadow-md ${cardBg} ${hoverBg} transition`}>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="font-semibold text-lg">{patient.name || '-'}</h2>
+              <p className={`text-sm ${textGray}`}>{patient.profileType?.toUpperCase() || 'OUTRO'}</p>
             </div>
 
-            {/* Ações */}
-            <div className="flex items-center space-x-3">
-              {/* Visualizar */}
-              <Link to={`/patients/${patient.siape}`} title="Visualizar">
-                <Eye className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
-              </Link>
-
-              {/* Prontuário */}
-              {showRecordsButton && (
-                <Link
-                  to={`/patients/${patient.siape}/records`}
-                  title="Prontuário"
-                >
-                  <FileText className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
-                </Link>
-              )}
-
-              {/* Editar */}
-              {canEdit && (
-                <Link
-                  to={`/patients/edit/${patient.siape}`}
-                  title="Editar"
-                >
-                  <Edit className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
-                </Link>
-              )}
-
-              {/* Excluir */}
-              {showDeleteButton && (
-                <button
-                  onClick={() =>
-                    confirm(`Tem certeza que deseja excluir ${patient.name}?`)
-                  }
-                  title="Excluir"
-                  className="bg-transparent border-none p-0 hover:bg-transparent focus:outline-none"
-                >
-                  <Trash className="w-5 h-5 text-gray-500 hover:text-green-500 cursor-pointer transition" />
-                </button>
-              )}
-            </div>
+            <Link
+              to={`/patients/${patient.siape}`}
+              className={`p-2 ${textGray} hover:text-green-500 rounded-full ${hoverBg}`}
+              title="Visualizar"
+            >
+              <Eye className="w-5 h-5" />
+            </Link>
           </div>
 
-          {/* Contato */}
-          <div className="mt-3 text-sm">
-            <p className="font-medium">Contato:</p>
-            <p>{patient.contact}</p>
-            <p>{patient.email}</p>
+          <div className="text-sm space-y-1">
+            {/* Campos comuns */}
+            {patient.birthDate && <p><span className="font-medium">Nascimento:</span> {patient.birthDate}</p>}
+            {patient.contact && <p><span className="font-medium">Telefone:</span> {patient.contact}</p>}
+            {patient.emergencyContact && <p><span className="font-medium">Emergência:</span> {patient.emergencyContact}</p>}
+            {patient.address && <p><span className="font-medium">Endereço:</span> {patient.address}</p>}
+
+            {/* Campos específicos por perfil */}
+            {patient.profileType === 'professor' && <p><span className="font-medium">Unidade:</span> {patient.unit}</p>}
+            {patient.profileType === 'tecnico' && (
+              <>
+                <p><span className="font-medium">Cargo:</span> {patient.cargo}</p>
+                <p><span className="font-medium">Unidade:</span> {patient.unit}</p>
+              </>
+            )}
+            {patient.profileType === 'aluno' && (
+              <>
+                <p><span className="font-medium">Matrícula DRE:</span> {patient.matricula}</p>
+                <p><span className="font-medium">Nível:</span> {patient.level}</p>
+                <p><span className="font-medium">Curso:</span> {patient.course}</p>
+              </>
+            )}
+            {patient.profileType === 'outro' && (
+              <>
+                {patient.name && <p><span className="font-medium">Nome:</span> {patient.name}</p>}
+                {patient.cpf && <p><span className="font-medium">CPF:</span> {patient.cpf}</p>}
+                {patient.cargo && <p><span className="font-medium">Cargo:</span> {patient.cargo}</p>}
+              </>
+            )}
           </div>
-
-          {/* Especialidades */}
-          {patient.specializations?.length > 0 && (
-            <div className="mt-3">
-              <p className="text-sm font-medium">Especialidades:</p>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {patient.specializations.map((spec, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs"
-                  >
-                    {spec}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Tempo de atendimento */}
-          {patient.firstVisitDuration && patient.normalVisitDuration && (
-            <div className="mt-3 text-sm">
-              <p className="font-medium">Tempo por atendimento:</p>
-              <p>
-                Primeira vez: {patient.firstVisitDuration} | Normal:{' '}
-                {patient.normalVisitDuration}
-              </p>
-            </div>
-          )}
         </div>
       ))}
     </div>

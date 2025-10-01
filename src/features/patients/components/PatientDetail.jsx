@@ -1,33 +1,43 @@
-// src/components/patients/PatientDetail.jsx
-import React from 'react';
+// src/features/patients/components/PatientDetail.jsx
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ArrowLeft, Edit, FileText } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import { patientsMock } from '../../../data/patientsMock';
 
 export default function PatientDetail() {
   const { siape } = useParams();
-  
-  console.log('рендерizando PatientDetail para SIAPE:', siape);
-  
-  // Dados simulados do paciente
-  const patient = {
-    name: 'Maria Silva Santos',
-    siape: siape,
-    age: 35,
-    gender: 'Feminino',
-    contact: '(11) 99999-9999',
-    email: 'maria.silva@email.com',
-    address: 'Rua das Flores, 123 - São Paulo/SP',
-    emergencyContact: '(11) 98888-8888',
-    bloodType: 'O+',
-    allergies: 'Penicilina',
-    firstVisit: '15/01/2024',
-    lastVisit: '25/01/2024',
-    status: 'Ativo',
-    observations: 'Paciente com histórico de ansiedade generalizada'
-  };
+  const [patient, setPatient] = useState(null);
+
+  useEffect(() => {
+    // Simula fetch do paciente pelo SIAPE ou ID
+    const fetchedPatient = patientsMock.find(p => p.siape === siape || p.matricula === siape || p.cpf === siape);
+
+    if (fetchedPatient) {
+      setPatient(fetchedPatient);
+    } else {
+      // Paciente não encontrado
+      setPatient({
+        name: 'Paciente não encontrado',
+        birthDate: '-',
+        address: '-',
+        contact: '-',
+        emergencyContact: '-',
+        status: 'Inativo',
+        cargo: '-',
+        unit: '-',
+        matricula: '-',
+        level: '-',
+        course: '-',
+        cpf: '-',
+      });
+    }
+  }, [siape]);
+
+  if (!patient) return <p>Carregando...</p>;
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <button 
@@ -41,90 +51,77 @@ export default function PatientDetail() {
         </div>
       </div>
 
+      {/* Card de detalhes */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center space-x-4 mb-6">
           <div className="bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold">
-            {patient.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+            {patient.name ? patient.name.split(' ').map(n => n[0]).join('').substring(0, 2) : '--'}
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">{patient.name}</h2>
-            <p className="text-gray-600">SIAPE: {patient.siape}</p>
+            <h2 className="text-xl font-bold text-gray-900">{patient.name || '-'}</h2>
+            {patient.siape && <p className="text-gray-600">SIAPE: {patient.siape}</p>}
+            {patient.matricula && <p className="text-gray-600">Matrícula: {patient.matricula}</p>}
+            {patient.cpf && <p className="text-gray-600">CPF: {patient.cpf}</p>}
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              {patient.status}
+              {patient.status || '-'}
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Informações Pessoais */}
           <div>
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Informações Pessoais</h3>
             <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Idade</p>
-                <p className="text-sm font-semibold">{patient.age} anos</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Gênero</p>
-                <p className="text-sm font-semibold">{patient.gender}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Tipo Sanguíneo</p>
-                <p className="text-sm font-semibold">{patient.bloodType}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Alergias</p>
-                <p className="text-sm font-semibold">{patient.allergies}</p>
-              </div>
+              <p className="text-sm font-medium text-gray-500">Data de Nascimento</p>
+              <p className="text-sm font-semibold">{patient.birthDate}</p>
+
+              <p className="text-sm font-medium text-gray-500">Endereço</p>
+              <p className="text-sm font-semibold">{patient.address}</p>
+
+              <p className="text-sm font-medium text-gray-500">Telefone</p>
+              <p className="text-sm font-semibold">{patient.contact}</p>
+
+              <p className="text-sm font-medium text-gray-500">Contato de Emergência</p>
+              <p className="text-sm font-semibold">{patient.emergencyContact}</p>
             </div>
           </div>
 
+          {/* Informações Profissionais / Acadêmicas */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Contato</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Informações Adicionais</h3>
             <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Telefone</p>
-                <p className="text-sm font-semibold">{patient.contact}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Email</p>
-                <p className="text-sm font-semibold">{patient.email}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Endereço</p>
-                <p className="text-sm font-semibold">{patient.address}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Contato de Emergência</p>
-                <p className="text-sm font-semibold">{patient.emergencyContact}</p>
-              </div>
-            </div>
-          </div>
+              {patient.cargo && (
+                <>
+                  <p className="text-sm font-medium text-gray-500">Cargo</p>
+                  <p className="text-sm font-semibold">{patient.cargo}</p>
+                </>
+              )}
 
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Informações Profissionais</h3>
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Primeira Visita</p>
-                <p className="text-sm font-semibold">{patient.firstVisit}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Última Visita</p>
-                <p className="text-sm font-semibold">{patient.lastVisit}</p>
-              </div>
-            </div>
-          </div>
+              {patient.unit && (
+                <>
+                  <p className="text-sm font-medium text-gray-500">Unidade</p>
+                  <p className="text-sm font-semibold">{patient.unit}</p>
+                </>
+              )}
 
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Observações</h3>
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Notas</p>
-                <p className="text-sm font-semibold">{patient.observations}</p>
-              </div>
+              {patient.level && (
+                <>
+                  <p className="text-sm font-medium text-gray-500">Nível</p>
+                  <p className="text-sm font-semibold">{patient.level}</p>
+                </>
+              )}
+
+              {patient.course && (
+                <>
+                  <p className="text-sm font-medium text-gray-500">Curso</p>
+                  <p className="text-sm font-semibold">{patient.course}</p>
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}

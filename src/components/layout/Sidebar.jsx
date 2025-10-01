@@ -50,7 +50,7 @@ export default function Sidebar() {
   const items = navItems[role] || [];
 
   const isDark = theme === 'dark';
-  const bg = isDark ? 'bg-[#0D0D0D]' : 'bg-green-100'; // preto mais escuro
+  const bg = isDark ? 'bg-[#0D0D0D]' : 'bg-green-100'; // fundo da sidebar
   const border = isDark ? 'border-[#1A1A1A]' : 'border-green-200';
   const text = isDark ? 'text-gray-200' : 'text-green-900';
   const hoverBg = isDark ? 'hover:bg-green-900' : 'hover:bg-green-200';
@@ -78,7 +78,9 @@ export default function Sidebar() {
               key={label}
               to={to}
               className={`flex items-center gap-3 p-2 rounded-md transition-all
-                ${isActive ? `${activeBg} text-green-400` : `${hoverBg} ${text}`}`}
+                ${isActive
+                  ? `${activeBg} ${isDark ? 'text-green-200' : 'text-green-900'}`
+                  : `${hoverBg} ${text}`}`}
             >
               {icon}
               {isExpanded && <span className="text-sm">{label}</span>}
