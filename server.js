@@ -1,16 +1,23 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
+import { PrismaClient } from "@prisma/client";
 
-const port = process.env.PORT;
+
+const prisma = new PrismaClient();
+
 
 const app = express();
 app.use(express.json());
 
 const users = [];
 
-app.post("/", (req, res) => {
-  users.push(req.body);
+app.post("/", async(req, res) => {
+  await prisma.user.create({
+    data:{
+      email: req.body.email,
+      name: req.body.nome,
+      age: req.body.age
+    }
+  })
   res.status(201).json(req.body);
 });
 
@@ -19,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.listen(port);
+app.listen(3000);
 
 console.log("rodando");
 
