@@ -23,19 +23,27 @@ app.get("/usuarios", async (req, res) => {
 });
 
 app.put("/usuarios/:id", async (req, res) => {
-  console.log(req);
-  //   await prisma.user.update({
-  //     where: {
-  //       id: req.params.id,
-  //     },
-  //     data: {
-  //       email: req.body.email,
-  //       name: req.body.nome,
-  //       age: req.body.age,
-  //     },
-  //   });
-  //   res.status(201).json(req.body);
+    await prisma.user.update({
+        where: {
+         id: req.params.id
+        },
+        data: {
+          email: req.body.email,
+          name: req.body.nome,
+          age: req.body.age,
+        },
+      });
+      res.status(201).json(req.body);
 });
+
+app.delete("/usuarios:id", async (req,res) => {
+  await prisma.user.delete({
+    where: {
+      id: req.params.id,
+    }
+  })
+  res.status(200).json({message:"usuario deletado com sucesso"})
+})
 
 app.listen(3000);
 
